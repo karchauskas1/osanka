@@ -24,13 +24,24 @@
     overflow:hidden;
     background:#000;
     touch-action:none;
+    position:relative;
+    cursor:grab;
   }
-  svg{width:100%;height:100%;}
+  #canvasBox:active{
+    cursor:grabbing;
+  }
+  svg{
+    width:100%;
+    height:100%;
+    user-select:none;
+  }
   .zone{
-    stroke:#888;
-    fill:transparent;
+    stroke:#00ff00;
+    fill:rgba(0,255,0,0.45);
     stroke-width:1.2;
+    cursor:pointer;
   }
+  .lvl0{ fill:rgba(0,255,0,0.45); stroke:#00ff00; }
   .lvl1{ fill:rgba(0,255,0,0.45); stroke:#00ff00; }
   .lvl2{ fill:rgba(255,255,0,0.45); stroke:#ffff00; }
   .lvl3{ fill:rgba(255,140,0,0.45); stroke:#ff8c00; }
@@ -69,6 +80,7 @@
   <br>
 
   <div id="canvasBox">
+    <div id="svgWrapper" style="width:100%;height:100%;overflow:visible;">
     <svg id="svg" viewBox="0 0 400 900">
 
       <g id="head" class="zone" transform="translate(-76.17647058823529,51.76470588235295)">
@@ -894,13 +906,158 @@
           Z"/>
       </g>
     </svg>
+    </div>
   </div>
 
 </div>
 
 
 <script>
-let activeLevel = 0;
+// === МАСШТАБИРОВАНИЕ И ПАНОРАМИРОВАНИЕ ===
+const svg = document.getElementById("svg");
+const canvasBox = document.getElementById("canvasBox");
+let scale = 1;
+let panX = 0;
+let panY = 0;
+let isPanning = false;
+let startX = 0;
+let startY = 0;
+let lastTouchDistance = 0;
+
+// Инициализация: все зоны по умолчанию зеленые (lvl1)
+document.querySelectorAll(".zone").forEach(zone => {
+  // Удаляем все классы уровней и добавляем lvl1 (зеленый)
+  zone.classList.remove("lvl0", "lvl1", "lvl2", "lvl3", "lvl4");
+  zone.classList.add("lvl1");
+});
+
+// Обновление transform SVG
+const svgWrapper = document.getElementById("svgWrapper");
+function updateTransform() {
+  svgWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+  svgWrapper.style.transformOrigin = "center center";
+}
+
+// Масштабирование колесиком мыши
+canvasBox.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? 0.9 : 1.1;
+  scale = Math.max(0.5, Math.min(3, scale * delta));
+  updateTransform();
+});
+
+// Панорамирование мышью (обработка уже в коде выше)
+
+canvasBox.addEventListener("mouseup", () => {
+  isPanning = false;
+  canvasBox.style.cursor = "grab";
+});
+
+canvasBox.addEventListener("mouseleave", () => {
+  isPanning = false;
+  canvasBox.style.cursor = "grab";
+});
+
+// Панорамирование и масштабирование на touch устройствах
+let touchStartX = 0;
+let touchStartY = 0;
+let initialPanX = 0;
+let initialPanY = 0;
+let touchStartTime = 0;
+let touchTarget = null;
+
+canvasBox.addEventListener("touchstart", (e) => {
+  touchTarget = e.target.closest(".zone");
+  touchStartTime = Date.now();
+  
+  if (e.touches.length === 1) {
+    // Одно касание - может быть панорамирование или клик на зону
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    initialPanX = panX;
+    initialPanY = panY;
+    
+    // Если кликнули на зону, не начинаем панорамирование сразу
+    if (!touchTarget) {
+      isPanning = true;
+    }
+  } else if (e.touches.length === 2) {
+    // Два касания - масштабирование
+    isPanning = false;
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    lastTouchDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+  }
+});
+
+canvasBox.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+  
+  if (e.touches.length === 1) {
+    const dist = Math.hypot(
+      e.touches[0].clientX - touchStartX,
+      e.touches[0].clientY - touchStartY
+    );
+    
+    // Если переместились больше чем на 10px, это панорамирование
+    if (dist > 10) {
+      isPanning = true;
+      panX = initialPanX + (e.touches[0].clientX - touchStartX);
+      panY = initialPanY + (e.touches[0].clientY - touchStartY);
+      updateTransform();
+    }
+  } else if (e.touches.length === 2) {
+    // Масштабирование двумя пальцами
+    isPanning = false;
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    const currentDistance = Math.hypot(
+      touch2.clientX - touch1.clientX,
+      touch2.clientY - touch1.clientY
+    );
+    
+    if (lastTouchDistance > 0) {
+      const delta = currentDistance / lastTouchDistance;
+      scale = Math.max(0.5, Math.min(3, scale * delta));
+      updateTransform();
+    }
+    lastTouchDistance = currentDistance;
+  }
+});
+
+canvasBox.addEventListener("touchend", (e) => {
+  // Если это был короткий тап на зоне (не панорамирование), обрабатываем как клик
+  if (!isPanning && touchTarget && e.changedTouches.length === 1) {
+    const timeDiff = Date.now() - touchStartTime;
+    const dist = Math.hypot(
+      e.changedTouches[0].clientX - touchStartX,
+      e.changedTouches[0].clientY - touchStartY
+    );
+    
+    if (timeDiff < 300 && dist < 10) {
+      // Это был клик на зону
+      touchTarget.classList.remove("lvl0","lvl1","lvl2","lvl3","lvl4");
+      if(activeLevel!==0) {
+        touchTarget.classList.add("lvl"+activeLevel);
+      } else {
+        touchTarget.classList.add("lvl1");
+      }
+    }
+  }
+  
+  isPanning = false;
+  lastTouchDistance = 0;
+  touchTarget = null;
+});
+
+// Инициализация transform
+updateTransform();
+
+// === РЕДАКТИРОВАНИЕ ЗОН ===
+let activeLevel = 1; // По умолчанию уровень 1 (зеленый)
 document.querySelectorAll(".btn").forEach(btn=>{
   btn.onclick=()=>{
     document.querySelectorAll(".btn").forEach(b=>b.classList.remove("active"));
@@ -908,10 +1065,66 @@ document.querySelectorAll(".btn").forEach(btn=>{
     activeLevel = parseInt(btn.dataset.level);
   };
 });
+
+// Устанавливаем кнопку "1" активной по умолчанию
+document.querySelector('.btn[data-level="1"]')?.classList.add("active");
+
+// Обработка клика на зону (не панорамирование)
+let mouseDownTime = 0;
+let mouseDownX = 0;
+let mouseDownY = 0;
+let mouseMoved = false;
+
+canvasBox.addEventListener("mousedown", (e) => {
+  if (e.target.closest(".zone")) {
+    mouseDownTime = Date.now();
+    mouseDownX = e.clientX;
+    mouseDownY = e.clientY;
+    mouseMoved = false;
+  } else {
+    // Если кликнули не на зону, начинаем панорамирование
+    isPanning = true;
+    startX = e.clientX - panX;
+    startY = e.clientY - panY;
+    canvasBox.style.cursor = "grabbing";
+  }
+});
+
+canvasBox.addEventListener("mousemove", (e) => {
+  if (mouseDownTime > 0) {
+    const dist = Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY);
+    if (dist > 5) {
+      mouseMoved = true;
+    }
+  }
+  
+  if (!isPanning) return;
+  panX = e.clientX - startX;
+  panY = e.clientY - startY;
+  updateTransform();
+});
+
 document.getElementById("svg").addEventListener("click",e=>{
-  const z=e.target.closest(".zone"); if(!z) return;
-  z.classList.remove("lvl1","lvl2","lvl3","lvl4");
-  if(activeLevel!==0) z.classList.add("lvl"+activeLevel);
+  // Проверяем, что это был клик, а не панорамирование
+  const timeDiff = Date.now() - mouseDownTime;
+  
+  if (mouseMoved || timeDiff > 300) return; // Это было панорамирование, а не клик
+  
+  const z=e.target.closest(".zone"); 
+  if(!z) return;
+  
+  e.stopPropagation(); // Предотвращаем дальнейшую обработку
+  
+  z.classList.remove("lvl0","lvl1","lvl2","lvl3","lvl4");
+  if(activeLevel!==0) {
+    z.classList.add("lvl"+activeLevel);
+  } else {
+    // Если выбрано "Снять", возвращаем к зеленому (lvl1)
+    z.classList.add("lvl1");
+  }
+  
+  mouseDownTime = 0;
+  mouseMoved = false;
 });
 
 // === СОХРАНЕНИЕ ===
@@ -921,11 +1134,12 @@ saveBtn.onclick = () => {
   const result = {};
 
   document.querySelectorAll(".zone").forEach(z => {
-    let lvl = 0;
-    if (z.classList.contains("lvl1")) lvl = 1;
+    // По умолчанию все зоны зеленые (lvl1)
+    let lvl = 1;
     if (z.classList.contains("lvl2")) lvl = 2;
-    if (z.classList.contains("lvl3")) lvl = 3;
-    if (z.classList.contains("lvl4")) lvl = 4;
+    else if (z.classList.contains("lvl3")) lvl = 3;
+    else if (z.classList.contains("lvl4")) lvl = 4;
+    else if (z.classList.contains("lvl0")) lvl = 1; // "Снять" возвращает к зеленому
 
     result[z.id] = lvl;
   });
