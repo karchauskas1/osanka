@@ -161,49 +161,48 @@ total, by_level, problem_zones, attention_zones = calc_stats(sample_diagnosis)
 # ========== ТАБЛИЦА ПРОБЛЕМНЫХ ЗОН ==========
 def make_problem_table(zones, data, compact=False):
     if not zones:
-        return '<p style="color:#999;font-style:italic;font-size:9px;">Проблемных зон не обнаружено</p>'
+        return '<p style="color:#b0b8c4;font-style:italic;font-size:9px;">Проблемных зон не обнаружено</p>'
 
     items = sorted(zones.items(), key=lambda x: -x[1])
-    pad = "4px 8px" if compact else "5px 10px"
-    fs = "9px" if compact else "10px"
+    pad = "3px 8px" if compact else "4px 10px"
+    fs = "8px" if compact else "9px"
 
     if compact and len(items) > 6:
-        # Две колонки для компактности
         mid = (len(items) + 1) // 2
         col1 = items[:mid]
         col2 = items[mid:]
 
         def make_col(items_list):
             rows = ""
-            for zone_id, lvl in items_list:
+            for i, (zone_id, lvl) in enumerate(items_list):
                 name = zone_names.get(zone_id, zone_id)
                 color = level_colors[lvl]
-                bg = level_bg[lvl]
-                dot = f'<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{color};margin-right:4px;"></span>'
-                rows += f'<tr style="background:{bg};"><td style="padding:{pad};border-bottom:1px solid #eee;font-size:{fs};">{dot}{name}</td></tr>'
-            return f'<table style="width:100%;border-collapse:collapse;">{rows}</table>'
+                bg = "#ffffff" if i % 2 == 0 else "#f9fafb"
+                dot = f'<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{color};margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>'
+                rows += f'<tr style="background:{bg};"><td style="padding:{pad};border-bottom:1px solid #eef0f2;font-size:{fs};color:#3d4852;font-weight:500;">{dot}{name}</td></tr>'
+            return f'<table style="width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;border:1px solid #eef0f2;">{rows}</table>'
 
         return f'<div style="display:flex;gap:12px;"><div style="flex:1;">{make_col(col1)}</div><div style="flex:1;">{make_col(col2)}</div></div>'
 
     rows = ""
-    for zone_id, lvl in items:
+    for i, (zone_id, lvl) in enumerate(items):
         name = zone_names.get(zone_id, zone_id)
         color = level_colors[lvl]
-        bg = level_bg[lvl]
         label = level_labels[lvl]
-        dot = f'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{color};margin-right:5px;"></span>'
+        bg = "#ffffff" if i % 2 == 0 else "#f9fafb"
+        dot = f'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{color};margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>'
         rows += f'''
         <tr style="background:{bg};">
-            <td style="padding:{pad};border-bottom:1px solid #eee;font-size:{fs};">{name}</td>
-            <td style="padding:{pad};border-bottom:1px solid #eee;font-size:{fs};">{dot}{label}</td>
+            <td style="padding:{pad};border-bottom:1px solid #eef0f2;font-size:{fs};color:#1a1a2e;font-weight:600;">{name}</td>
+            <td style="padding:{pad};border-bottom:1px solid #eef0f2;font-size:{fs};color:#3d4852;font-weight:500;">{dot}{label}</td>
         </tr>'''
 
     return f'''
-    <table style="width:100%;border-collapse:collapse;">
+    <table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1.5px solid #e4e8ec;">
         <thead>
-            <tr style="background:#f7f7f7;">
-                <th style="padding:{pad};text-align:left;border-bottom:2px solid #ddd;font-weight:600;font-size:{fs};">Зона</th>
-                <th style="padding:{pad};text-align:left;border-bottom:2px solid #ddd;font-weight:600;font-size:{fs};">Статус</th>
+            <tr style="background:linear-gradient(180deg,#f6f8fa,#eef0f2);">
+                <th style="padding:{pad};text-align:left;border-bottom:2px solid #d0d4d8;font-weight:700;font-size:{fs};color:#555;letter-spacing:0.3px;">Зона</th>
+                <th style="padding:{pad};text-align:left;border-bottom:2px solid #d0d4d8;font-weight:700;font-size:{fs};color:#555;letter-spacing:0.3px;">Статус</th>
             </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -218,6 +217,27 @@ session_number = "3"
 
 front_svg = get_front_svg(sample_diagnosis)
 back_svg = get_back_svg(sample_diagnosis)
+
+# Расчёт общего балла здоровья (0-100)
+health_score = round(100 - ((by_level[2] * 1 + by_level[3] * 3 + by_level[4] * 5) / total) * 20)
+score_color = "#2ECC71" if health_score >= 80 else "#F1C40F" if health_score >= 60 else "#E67E22" if health_score >= 40 else "#E74C3C"
+score_label = "Отлично" if health_score >= 80 else "Хорошо" if health_score >= 60 else "Требует внимания" if health_score >= 40 else "Критично"
+
+# SVG для кругового индикатора
+def make_score_ring(score, color):
+    r = 40
+    circ = 2 * 3.14159 * r
+    offset = circ * (1 - score / 100)
+    return f'''<svg width="100" height="100" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="{r}" fill="none" stroke="#eef2f7" stroke-width="8"/>
+      <circle cx="50" cy="50" r="{r}" fill="none" stroke="{color}" stroke-width="8"
+        stroke-dasharray="{circ}" stroke-dashoffset="{offset}"
+        stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      <text x="50" y="46" text-anchor="middle" font-size="22" font-weight="800" fill="{color}">{score}</text>
+      <text x="50" y="60" text-anchor="middle" font-size="8" fill="#999">баллов</text>
+    </svg>'''
+
+score_ring = make_score_ring(health_score, score_color)
 
 html_report = f'''<!DOCTYPE html>
 <html lang="ru">
@@ -253,10 +273,20 @@ html_report = f'''<!DOCTYPE html>
 
   /* ===== HEADER ===== */
   .header {{
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a2332 100%);
     color: white;
-    padding: 28px 36px 24px;
+    padding: 30px 40px 26px;
     position: relative;
+  }}
+
+  .header::before {{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: radial-gradient(ellipse at top right, rgba(46,204,113,0.15), transparent 70%);
   }}
 
   .header::after {{
@@ -265,14 +295,15 @@ html_report = f'''<!DOCTYPE html>
     bottom: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #2ECC71, #F1C40F, #E67E22, #E74C3C);
+    height: 3px;
+    background: linear-gradient(90deg, #2ECC71 0%, #2ECC71 60%, #F1C40F 75%, #E67E22 88%, #E74C3C 100%);
   }}
 
   .logo {{
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     letter-spacing: -0.5px;
+    position: relative;
   }}
 
   .logo span {{
@@ -280,56 +311,142 @@ html_report = f'''<!DOCTYPE html>
   }}
 
   .logo-sub {{
-    font-size: 11px;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 3px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 4px;
     text-transform: uppercase;
-    margin-top: 2px;
+    margin-top: 3px;
+    font-weight: 500;
   }}
 
   .doc-title {{
-    font-size: 13px;
-    color: rgba(255,255,255,0.85);
-    margin-top: 12px;
-    font-weight: 500;
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    margin-top: 14px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
   }}
 
   /* ===== CLIENT INFO ===== */
   .client-info {{
     display: flex;
     justify-content: space-between;
-    padding: 16px 36px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+    padding: 18px 40px;
+    background: linear-gradient(180deg, #f6f8fa 0%, #ffffff 100%);
+    border-bottom: 1px solid #e8ecf0;
     font-size: 11.5px;
   }}
 
   .client-info .label {{
-    color: #999;
-    font-size: 9px;
+    color: #a0a8b4;
+    font-size: 8px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
+    letter-spacing: 1.5px;
+    margin-bottom: 3px;
+    font-weight: 600;
   }}
 
   .client-info .value {{
-    font-weight: 600;
-    color: #2D3436;
+    font-weight: 700;
+    color: #1a1a2e;
+    font-size: 12px;
   }}
 
   /* ===== CONTENT ===== */
   .content {{
-    padding: 20px 36px;
+    padding: 22px 40px;
   }}
 
   .section-title {{
     font-size: 14px;
     font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 12px;
+    color: #0d1117;
+    margin-bottom: 10px;
     padding-bottom: 6px;
-    border-bottom: 2px solid #2ECC71;
+    border-bottom: 3px solid #2ECC71;
     display: inline-block;
+    letter-spacing: -0.2px;
+  }}
+
+  /* ===== SCORE + STATS ===== */
+  .score-stats-row {{
+    display: flex;
+    gap: 16px;
+    margin: 8px 0 22px;
+    align-items: stretch;
+  }}
+
+  .score-card {{
+    background: linear-gradient(145deg, #f8fffe, #edf7f0);
+    border: 1.5px solid #d4edda;
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }}
+
+  .score-card .score-title {{
+    font-size: 9px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }}
+
+  .score-card .score-verdict {{
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 4px;
+  }}
+
+  .stats-grid {{
+    flex: 1;
+    display: flex;
+    gap: 10px;
+  }}
+
+  .stat-card {{
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px 12px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }}
+
+  .stat-card::before {{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }}
+
+  .stat-number {{
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }}
+
+  .stat-label {{
+    font-size: 8px;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+    font-weight: 600;
+  }}
+
+  .stat-sublabel {{
+    font-size: 7px;
+    color: #bbb;
+    margin-top: 1px;
   }}
 
   /* ===== BODY MAP ===== */
@@ -337,8 +454,8 @@ html_report = f'''<!DOCTYPE html>
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 10px;
-    margin: 8px 0 16px;
+    gap: 16px;
+    margin: 10px 0 16px;
   }}
 
   .body-map {{
@@ -346,73 +463,49 @@ html_report = f'''<!DOCTYPE html>
   }}
 
   .body-map-label {{
-    font-size: 10px;
-    font-weight: 600;
-    color: #666;
+    font-size: 9px;
+    font-weight: 700;
+    color: #555;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 4px;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
   }}
 
   .body-map svg {{
-    width: 200px;
+    width: 210px;
     height: auto;
-    background: #fafafa;
-    border-radius: 12px;
-    border: 1px solid #eee;
+    background: linear-gradient(180deg, #fafbfc 0%, #f0f2f5 100%);
+    border-radius: 14px;
+    border: 1.5px solid #e4e8ec;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }}
 
   /* ===== LEGEND ===== */
   .legend {{
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin: 12px 0 16px;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    gap: 24px;
+    margin: 14px 0 0;
+    padding: 10px 16px;
+    background: #f6f8fa;
+    border-radius: 10px;
+    border: 1px solid #eef0f2;
   }}
 
   .legend-item {{
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 10px;
+    gap: 6px;
+    font-size: 9px;
     color: #555;
+    font-weight: 500;
   }}
 
   .legend-dot {{
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-  }}
-
-  /* ===== STATS BAR ===== */
-  .stats-bar {{
-    display: flex;
-    gap: 12px;
-    margin: 12px 0 20px;
-  }}
-
-  .stat-card {{
-    flex: 1;
-    text-align: center;
-    padding: 12px 8px;
-    border-radius: 10px;
-    border: 1px solid #eee;
-  }}
-
-  .stat-number {{
-    font-size: 22px;
-    font-weight: 800;
-  }}
-
-  .stat-label {{
-    font-size: 9px;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
   }}
 
   /* ===== FOOTER ===== */
@@ -421,82 +514,95 @@ html_report = f'''<!DOCTYPE html>
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 12px 36px;
-    background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-    font-size: 9px;
-    color: #aaa;
+    padding: 10px 40px;
+    background: #f6f8fa;
+    border-top: 1px solid #e8ecf0;
+    font-size: 8px;
+    color: #b0b8c4;
     display: flex;
     justify-content: space-between;
+    letter-spacing: 0.3px;
   }}
 
-  /* ===== PAGE 2 SPECIFIC ===== */
+  /* ===== PAGE 2 ===== */
   .zone-group {{
-    margin-bottom: 16px;
-  }}
-
-  .zone-group-title {{
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 6px;
-    padding-left: 8px;
-    border-left: 3px solid #2ECC71;
-  }}
-
-  .recommendations {{
-    background: linear-gradient(135deg, #f8f9fa, #e8f8f0);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-top: 16px;
-  }}
-
-  .recommendations h3 {{
-    font-size: 13px;
-    font-weight: 700;
-    color: #1a1a2e;
     margin-bottom: 10px;
   }}
 
-  .recommendations li {{
+  .recommendations {{
+    background: linear-gradient(145deg, #f8fffe, #edf7f0);
+    border: 1.5px solid #d4edda;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    position: relative;
+  }}
+
+  .recommendations::before {{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #2ECC71;
+    border-radius: 12px 12px 0 0;
+  }}
+
+  .recommendations h3 {{
     font-size: 11px;
-    color: #444;
-    margin-bottom: 6px;
-    padding-left: 4px;
+    font-weight: 700;
+    color: #0d1117;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }}
+
+  .recommendations li {{
+    font-size: 9px;
+    color: #3d4852;
+    margin-bottom: 5px;
+    padding-left: 2px;
+    line-height: 1.45;
   }}
 
   .signature-block {{
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid #ddd;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1.5px solid #e4e8ec;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }}
 
   .signature-line {{
-    width: 180px;
-    border-bottom: 1px solid #999;
+    width: 150px;
+    border-bottom: 1.5px solid #c0c8d0;
     margin-bottom: 4px;
   }}
 
   .signature-label {{
-    font-size: 9px;
-    color: #999;
+    font-size: 7.5px;
+    color: #a0a8b4;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
   }}
 
   .qr-placeholder {{
-    width: 60px;
-    height: 60px;
-    background: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #f0f2f5, #e4e8ec);
+    border: 1.5px solid #d0d4d8;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 7px;
-    color: #bbb;
+    font-size: 6.5px;
+    color: #b0b8c4;
     text-align: center;
+    font-weight: 600;
   }}
 
   .watermark {{
@@ -504,12 +610,27 @@ html_report = f'''<!DOCTYPE html>
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 80px;
+    font-size: 90px;
     font-weight: 900;
-    color: rgba(46, 204, 113, 0.04);
-    letter-spacing: 10px;
+    color: rgba(46, 204, 113, 0.03);
+    letter-spacing: 12px;
     pointer-events: none;
     white-space: nowrap;
+  }}
+
+  /* ===== DISCLAIMER ===== */
+  .disclaimer {{
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: #f6f8fa;
+    border-radius: 8px;
+    border-left: 3px solid #d0d4d8;
+  }}
+
+  .disclaimer p {{
+    font-size: 7px;
+    color: #a0a8b4;
+    line-height: 1.5;
   }}
 </style>
 </head>
@@ -544,24 +665,39 @@ html_report = f'''<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Статистика -->
   <div class="content">
-    <div class="stats-bar">
-      <div class="stat-card" style="background:#E8F8F0;border-color:#2ECC71;">
-        <div class="stat-number" style="color:#2ECC71;">{by_level[1]}</div>
-        <div class="stat-label">Норма</div>
+    <!-- Общий балл + статистика -->
+    <div class="score-stats-row">
+      <div class="score-card">
+        <div class="score-title">Общий балл</div>
+        {score_ring}
+        <div class="score-verdict" style="color:{score_color};">{score_label}</div>
       </div>
-      <div class="stat-card" style="background:#FEF9E7;border-color:#F1C40F;">
-        <div class="stat-number" style="color:#F1C40F;">{by_level[2]}</div>
-        <div class="stat-label">Лёгкое</div>
-      </div>
-      <div class="stat-card" style="background:#FDF2E9;border-color:#E67E22;">
-        <div class="stat-number" style="color:#E67E22;">{by_level[3]}</div>
-        <div class="stat-label">Умеренное</div>
-      </div>
-      <div class="stat-card" style="background:#FDEDEC;border-color:#E74C3C;">
-        <div class="stat-number" style="color:#E74C3C;">{by_level[4]}</div>
-        <div class="stat-label">Выраженное</div>
+      <div class="stats-grid">
+        <div class="stat-card" style="background:linear-gradient(180deg,#e8f8f0,#d4edda);border:1.5px solid #c3e6cb;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#2ECC71;border-radius:12px 12px 0 0;"></div>
+          <div class="stat-number" style="color:#27ae60;">{by_level[1]}</div>
+          <div class="stat-label">Норма</div>
+          <div class="stat-sublabel">{round(by_level[1]/total*100)}%</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(180deg,#fef9e7,#fdebd0);border:1.5px solid #f9e79f;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F1C40F;border-radius:12px 12px 0 0;"></div>
+          <div class="stat-number" style="color:#d4a017;">{by_level[2]}</div>
+          <div class="stat-label">Лёгкое</div>
+          <div class="stat-sublabel">{round(by_level[2]/total*100)}%</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(180deg,#fdf2e9,#fbe0c4);border:1.5px solid #f5cba7;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E67E22;border-radius:12px 12px 0 0;"></div>
+          <div class="stat-number" style="color:#d35400;">{by_level[3]}</div>
+          <div class="stat-label">Умеренное</div>
+          <div class="stat-sublabel">{round(by_level[3]/total*100)}%</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(180deg,#fdedec,#f5c6cb);border:1.5px solid #f1948a;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E74C3C;border-radius:12px 12px 0 0;"></div>
+          <div class="stat-number" style="color:#c0392b;">{by_level[4]}</div>
+          <div class="stat-label">Выраженное</div>
+          <div class="stat-sublabel">{round(by_level[4]/total*100)}%</div>
+        </div>
       </div>
     </div>
 
@@ -586,15 +722,15 @@ html_report = f'''<!DOCTYPE html>
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:#F1C40F;"></div>
-        Лёгкое напряжение
+        Лёгкое
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:#E67E22;"></div>
-        Умеренное напряжение
+        Умеренное
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:#E74C3C;"></div>
-        Выраженное напряжение
+        Выраженное
       </div>
     </div>
   </div>
@@ -610,68 +746,64 @@ html_report = f'''<!DOCTYPE html>
 <div class="page">
   <div class="watermark">OSANKA</div>
 
-  <div class="header" style="padding:18px 36px 16px;">
+  <div class="header" style="padding:12px 40px 10px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div>
-        <div class="logo" style="font-size:20px;">OSANKA<span>.health</span></div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-size:11px;opacity:0.7;">{client_name} · {diagnosis_date}</div>
-      </div>
+      <div class="logo" style="font-size:18px;">OSANKA<span>.health</span></div>
+      <div style="text-align:right;font-size:10px;opacity:0.6;font-weight:400;">{client_name} · {diagnosis_date}</div>
     </div>
   </div>
 
-  <div class="content">
+  <div class="content" style="padding:16px 40px;">
     <!-- Проблемные зоны -->
     <div class="zone-group">
-      <div class="section-title" style="border-color:#E74C3C;">Зоны повышенного внимания</div>
-      <p style="font-size:9.5px;color:#666;margin-bottom:6px;">
+      <div class="section-title" style="border-color:#E74C3C;font-size:12px;margin-bottom:6px;padding-bottom:4px;">Зоны повышенного внимания</div>
+      <p style="font-size:8px;color:#888;margin-bottom:5px;font-weight:500;">
         Зоны с умеренным и выраженным напряжением, требующие приоритетной работы
       </p>
       {make_problem_table(problem_zones, sample_diagnosis)}
     </div>
 
     <!-- Зоны с лёгким напряжением -->
-    <div class="zone-group" style="margin-top:12px;">
-      <div class="section-title" style="border-color:#F1C40F;">Зоны с лёгким напряжением</div>
-      <p style="font-size:9.5px;color:#666;margin-bottom:6px;">
-        Области, которые стоит мониторить — пока без активного вмешательства
+    <div class="zone-group" style="margin-top:8px;">
+      <div class="section-title" style="border-color:#F1C40F;font-size:12px;margin-bottom:6px;padding-bottom:4px;">Зоны с лёгким напряжением</div>
+      <p style="font-size:8px;color:#888;margin-bottom:5px;font-weight:500;">
+        Области для мониторинга — без активного вмешательства
       </p>
       {make_problem_table(attention_zones, sample_diagnosis, compact=True)}
     </div>
 
     <!-- Рекомендации -->
-    <div class="recommendations" style="margin-top:12px;padding:12px 16px;">
-      <h3 style="font-size:12px;">Рекомендации специалиста</h3>
-      <ol style="padding-left:16px;">
-        <li style="font-size:9.5px;margin-bottom:4px;"><strong>Левая лопатка и поясница</strong> — выраженное напряжение. Рекомендуется курс миофасциального релиза 2 раза в неделю, акцент на левую сторону.</li>
-        <li style="font-size:9.5px;margin-bottom:4px;"><strong>Трапециевидная мышца</strong> — асимметрия между правой и левой стороной. Необходима работа с шейно-воротниковой зоной.</li>
-        <li style="font-size:9.5px;margin-bottom:4px;"><strong>Левое колено</strong> — умеренное напряжение, возможна компенсаторная нагрузка из-за перекоса таза. Контроль через 2 недели.</li>
-        <li style="font-size:9.5px;margin-bottom:4px;"><strong>Общая рекомендация:</strong> ежедневная утренняя разминка 10–15 мин, акцент на мобильность грудного отдела и растяжку левой стороны тела.</li>
+    <div class="recommendations">
+      <h3>Рекомендации специалиста</h3>
+      <ol style="padding-left:18px;">
+        <li><strong>Левая лопатка и поясница</strong> — выраженное напряжение. Рекомендуется курс миофасциального релиза 2 раза в неделю, акцент на левую сторону.</li>
+        <li><strong>Трапециевидная мышца</strong> — асимметрия между правой и левой стороной. Необходима работа с шейно-воротниковой зоной.</li>
+        <li><strong>Левое колено</strong> — умеренное напряжение, возможна компенсаторная нагрузка из-за перекоса таза. Контроль через 2 недели.</li>
+        <li><strong>Общая рекомендация:</strong> ежедневная утренняя разминка 10–15 мин, акцент на мобильность грудного отдела и растяжку левой стороны тела.</li>
       </ol>
     </div>
 
     <!-- Подпись -->
-    <div class="signature-block" style="margin-top:16px;padding-top:12px;">
+    <div class="signature-block">
       <div>
-        <div class="signature-line" style="width:150px;"></div>
+        <div class="signature-line"></div>
         <div class="signature-label">Подпись специалиста</div>
-        <div style="font-size:10px;margin-top:3px;font-weight:600;">{specialist_name}</div>
+        <div style="font-size:10px;margin-top:4px;font-weight:700;color:#0d1117;">{specialist_name}</div>
       </div>
       <div style="text-align:center;">
-        <div class="qr-placeholder" style="width:50px;height:50px;">
+        <div class="qr-placeholder">
           QR<br>Запись
         </div>
       </div>
       <div>
-        <div class="signature-line" style="width:150px;"></div>
+        <div class="signature-line"></div>
         <div class="signature-label">Подпись клиента</div>
       </div>
     </div>
 
     <!-- Дисклеймер -->
-    <div style="margin-top:12px;padding:8px 12px;background:#f8f9fa;border-radius:6px;border-left:3px solid #ddd;">
-      <p style="font-size:8px;color:#999;line-height:1.5;">
+    <div class="disclaimer">
+      <p>
         Данный отчёт носит информационный характер и не является медицинским заключением.
         Результаты диагностики отражают состояние мышечного тонуса на момент осмотра.
         При наличии болевого синдрома рекомендуется консультация профильного врача.
