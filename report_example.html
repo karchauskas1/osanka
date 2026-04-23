@@ -3,479 +3,607 @@
 <head>
 <meta charset="UTF-8">
 <style>
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 300;
+    src: url('file:///home/user/osanka/fonts/Inter-Light.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 400;
+    src: url('file:///home/user/osanka/fonts/Inter-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 500;
+    src: url('file:///home/user/osanka/fonts/Inter-Medium.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 600;
+    src: url('file:///home/user/osanka/fonts/Inter-SemiBold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 700;
+    src: url('file:///home/user/osanka/fonts/Inter-Bold.ttf') format('truetype');
+  }
+
   @page {
     size: A4;
-    margin: 0;
+    margin: 20mm 16mm;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #2D3436;
+  html, body {
+    font-family: 'Inter', sans-serif;
+    color: #1e2123;
     background: white;
-    line-height: 1.5;
-  }
-
-  .page {
-    width: 210mm;
-    min-height: 297mm;
-    padding: 0;
-    page-break-after: always;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .page:last-child {
-    page-break-after: avoid;
-  }
-
-  /* ===== HEADER ===== */
-  .header {
-    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a2332 100%);
-    color: white;
-    padding: 30px 40px 26px;
-    position: relative;
-  }
-
-  .header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 100%;
-    background: radial-gradient(ellipse at top right, rgba(46,204,113,0.15), transparent 70%);
-  }
-
-  .header::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #2ECC71 0%, #2ECC71 60%, #F1C40F 75%, #E67E22 88%, #E74C3C 100%);
-  }
-
-  .logo {
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    position: relative;
-  }
-
-  .logo span {
-    color: #2ECC71;
-  }
-
-  .logo-sub {
     font-size: 10px;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-top: 3px;
-    font-weight: 500;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .doc-title {
-    font-size: 14px;
-    color: rgba(255,255,255,0.9);
-    margin-top: 14px;
-    font-weight: 400;
-    letter-spacing: 0.3px;
+  /* ===== ШАПКА ===== */
+  .top-banner {
+    background: #c7db5e;
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
   }
 
-  /* ===== CLIENT INFO ===== */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #1e2123;
+  }
+
+  .top-banner .meta {
+    text-align: right;
+    font-size: 9px;
+    line-height: 1.5;
+    color: #1e2123;
+  }
+
+  .top-banner .meta .title {
+    font-weight: 700;
+    font-size: 10px;
+  }
+
   .client-info {
     display: flex;
     justify-content: space-between;
-    padding: 18px 40px;
-    background: linear-gradient(180deg, #f6f8fa 0%, #ffffff 100%);
-    border-bottom: 1px solid #e8ecf0;
-    font-size: 11.5px;
+    padding: 4px 20px 16px;
+    font-size: 10px;
   }
 
-  .client-info .label {
-    color: #a0a8b4;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 3px;
+  .client-info .role {
+    color: #8c8e93;
+    font-weight: 400;
+    margin-right: 4px;
+  }
+
+  .client-info .name {
+    color: #1e2123;
     font-weight: 600;
   }
 
-  .client-info .value {
-    font-weight: 700;
-    color: #1a1a2e;
-    font-size: 12px;
-  }
-
-  /* ===== CONTENT ===== */
-  .content {
-    padding: 22px 40px;
-  }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #0d1117;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 3px solid #2ECC71;
-    display: inline-block;
-    letter-spacing: -0.2px;
-  }
-
-  /* ===== SCORE + STATS ===== */
-  .score-stats-row {
-    display: flex;
-    gap: 16px;
-    margin: 8px 0 22px;
-    align-items: stretch;
-  }
-
-  .score-card {
-    background: linear-gradient(145deg, #f8fffe, #edf7f0);
-    border: 1.5px solid #d4edda;
-    border-radius: 14px;
-    padding: 16px 20px;
-    text-align: center;
-    min-width: 130px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .score-card .score-title {
-    font-size: 9px;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-
-  .score-card .score-verdict {
-    font-size: 11px;
-    font-weight: 700;
-    margin-top: 4px;
-  }
-
-  .stats-grid {
-    flex: 1;
-    display: flex;
-    gap: 10px;
-  }
-
-  .stat-card {
-    flex: 1;
-    text-align: center;
-    padding: 14px 8px 12px;
+  /* ===== КАРТОЧКА ===== */
+  .card {
+    background: #ffffff;
+    border: 1px solid #ededea;
     border-radius: 12px;
-    position: relative;
-    overflow: hidden;
+    padding: 14px 18px;
+    margin-bottom: 8px;
   }
 
-  .stat-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-  }
-
-  .stat-number {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -1px;
-  }
-
-  .stat-label {
-    font-size: 8px;
-    color: #777;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-top: 2px;
-    font-weight: 600;
-  }
-
-  .stat-sublabel {
-    font-size: 7px;
-    color: #bbb;
-    margin-top: 1px;
-  }
-
-  /* ===== BODY MAP ===== */
-  .body-map-container {
+  .card-head {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 16px;
-    margin: 10px 0 16px;
-  }
-
-  .body-map {
-    text-align: center;
-  }
-
-  .body-map-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-bottom: 6px;
-  }
-
-  .body-map svg {
-    width: 210px;
-    height: auto;
-    background: linear-gradient(180deg, #fafbfc 0%, #f0f2f5 100%);
-    border-radius: 14px;
-    border: 1.5px solid #e4e8ec;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-
-  /* ===== LEGEND ===== */
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin: 14px 0 0;
-    padding: 10px 16px;
-    background: #f6f8fa;
-    border-radius: 10px;
-    border: 1px solid #eef0f2;
-  }
-
-  .legend-item {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 6px;
-    font-size: 9px;
-    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #1e2123;
+  }
+
+  .card-score {
+    font-size: 10px;
+    color: #8c8e93;
     font-weight: 500;
   }
 
-  .legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  }
-
-  /* ===== FOOTER ===== */
-  .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px 40px;
-    background: #f6f8fa;
-    border-top: 1px solid #e8ecf0;
-    font-size: 8px;
-    color: #b0b8c4;
-    display: flex;
-    justify-content: space-between;
-    letter-spacing: 0.3px;
-  }
-
-  /* ===== PAGE 2 ===== */
-  .zone-group {
-    margin-bottom: 10px;
-  }
-
-  .recommendations {
-    background: linear-gradient(145deg, #f8fffe, #edf7f0);
-    border: 1.5px solid #d4edda;
+  /* ===== ОБЩАЯ ОЦЕНКА ===== */
+  .overall {
+    background: #ffffff;
+    border: 1px solid #ededea;
     border-radius: 12px;
-    padding: 12px 16px;
-    margin-top: 10px;
-    position: relative;
-  }
-
-  .recommendations::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: #2ECC71;
-    border-radius: 12px 12px 0 0;
-  }
-
-  .recommendations h3 {
-    font-size: 11px;
-    font-weight: 700;
-    color: #0d1117;
+    padding: 18px 22px;
     margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
 
-  .recommendations li {
-    font-size: 9px;
-    color: #3d4852;
-    margin-bottom: 5px;
-    padding-left: 2px;
-    line-height: 1.45;
-  }
-
-  .signature-block {
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1.5px solid #e4e8ec;
+  .overall-head {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 
-  .signature-line {
-    width: 150px;
-    border-bottom: 1.5px solid #c0c8d0;
+  .overall-left .label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #8c8e93;
     margin-bottom: 4px;
   }
 
-  .signature-label {
-    font-size: 7.5px;
-    color: #a0a8b4;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-weight: 600;
+  .overall-left .value {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    color: #1e2123;
   }
 
-  .qr-placeholder {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #f0f2f5, #e4e8ec);
-    border: 1.5px solid #d0d4d8;
+  .overall-left .value .max {
+    font-size: 18px;
+    font-weight: 300;
+    color: #8c8e93;
+    margin-left: 2px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .badge-ok {
+    background: rgba(199,219,94,0.35);
+    color: #4d5c1a;
+  }
+
+  .badge-warn {
+    background: rgba(255,115,72,0.18);
+    color: #b84a1e;
+  }
+
+  .badge-crit {
+    background: rgba(249,67,94,0.15);
+    color: #b22233;
+  }
+
+  .overall-bar {
+    margin-top: 14px;
+  }
+
+  /* ===== СТРОКА МЕТРИКИ ===== */
+  .metric-row {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f4f4f1;
+  }
+
+  .metric-row:last-child {
+    border-bottom: none;
+  }
+
+  .metric-label {
+    flex: 0 0 36%;
+    font-size: 10px;
+    font-weight: 500;
+    color: #1e2123;
+  }
+
+  .metric-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .metric-value {
+    flex: 0 0 70px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1e2123;
+    padding: 0 12px 0 8px;
+  }
+
+  .metric-badge {
+    flex: 0 0 95px;
+    text-align: right;
+  }
+
+  /* ===== ОСАНКА (список признаков) ===== */
+  .posture-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .posture-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f7f7f4;
+    border-radius: 8px;
+  }
+
+  .posture-row .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff7348;
+    margin-right: 10px;
+  }
+
+  .posture-row .text {
+    font-size: 10px;
+    color: #1e2123;
+    font-weight: 500;
+  }
+
+  /* ===== ЖАЛОБЫ / РЕКОМЕНДАЦИИ ===== */
+  .text-section {
+    text-align: center;
+    margin: 12px 0 8px;
+  }
+
+  .text-section .label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8c8e93;
+    margin-bottom: 8px;
+  }
+
+  .text-section .body {
+    font-size: 10px;
+    color: #1e2123;
+    font-weight: 400;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  .rec-list {
+    text-align: left;
+    max-width: 80%;
+    margin: 0 auto;
+    font-size: 10px;
+    color: #1e2123;
+  }
+
+  .rec-list li {
+    margin-bottom: 4px;
+  }
+
+  /* ===== КАРТА ТЕЛА ===== */
+  .body-map-wrap {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .body-map-wrap .label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8c8e93;
+    margin-bottom: 10px;
+  }
+
+  .body-map-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .body-map-row svg.body {
+    width: 110px;
+    height: auto;
+    background: #f7f7f4;
+    border-radius: 10px;
+    padding: 6px;
+  }
+
+  /* ===== ФОТО ===== */
+  .photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .photo {
+    aspect-ratio: 3 / 4;
+    background: #f1f1f1;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 6.5px;
-    color: #b0b8c4;
-    text-align: center;
-    font-weight: 600;
+    color: #8c8e93;
+    font-size: 10px;
+    font-weight: 500;
+    min-height: 180px;
   }
 
-  .watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 90px;
-    font-weight: 900;
-    color: rgba(46, 204, 113, 0.03);
-    letter-spacing: 12px;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  /* ===== DISCLAIMER ===== */
-  .disclaimer {
-    margin-top: 6px;
-    padding: 6px 10px;
-    background: #f6f8fa;
-    border-radius: 8px;
-    border-left: 3px solid #d0d4d8;
-  }
-
-  .disclaimer p {
-    font-size: 7px;
-    color: #a0a8b4;
-    line-height: 1.5;
+  /* ===== ПОДВАЛ ===== */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 6px 0;
+    border-top: 1px solid #ededea;
+    margin-top: 14px;
+    font-size: 8px;
+    color: #8c8e93;
+    font-weight: 400;
   }
 </style>
 </head>
 <body>
 
-<!-- ==================== СТРАНИЦА 1 ==================== -->
-<div class="page">
-  <div class="watermark">OSANKA</div>
-
-  <div class="header">
-    <div class="logo">OSANKA<span>.health</span></div>
-    <div class="logo-sub">Студия коррекции осанки</div>
-    <div class="doc-title">Отчёт функциональной диагностики тела</div>
+  <!-- ==== ШАПКА ==== -->
+  <div class="top-banner">
+    <div class="brand"><svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <path d="M26 4c-8 0-18 4-18 16 0 5 3 8 8 8 10 0 14-10 14-20 0-2 0-4-1-4h-3zM11 26c1-4 4-9 9-12-3 5-6 9-9 12z"
+        fill="#1e2123"/>
+</svg><span>ОСАНКА</span></div>
+    <div class="meta">
+      <div class="title">Диагностический осмотр</div>
+      <div>Диагност: Кузнецов Иван</div>
+    </div>
   </div>
 
   <div class="client-info">
     <div>
-      <div class="label">Клиент</div>
-      <div class="value">Иванова Мария Сергеевна</div>
+      <span class="role">Клиент</span>
+      <span class="name">Иванов Иван Иванович · 27 лет</span>
     </div>
     <div>
-      <div class="label">Дата диагностики</div>
-      <div class="value">24 марта 2026</div>
-    </div>
-    <div>
-      <div class="label">Сессия №</div>
-      <div class="value">3</div>
-    </div>
-    <div>
-      <div class="label">Специалист</div>
-      <div class="value">Александр Карчаускас</div>
+      <span class="role">Дата</span>
+      <span class="name">15.03.2026</span>
     </div>
   </div>
 
-  <div class="content">
-    <!-- Общий балл + статистика -->
-    <div class="score-stats-row">
-      <div class="score-card">
-        <div class="score-title">Общий балл</div>
-        <svg width="100" height="100" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#eef2f7" stroke-width="8"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#2ECC71" stroke-width="8"
-        stroke-dasharray="251.3272" stroke-dashoffset="40.21235200000001"
-        stroke-linecap="round" transform="rotate(-90 50 50)"/>
-      <text x="50" y="46" text-anchor="middle" font-size="22" font-weight="800" fill="#2ECC71">84</text>
-      <text x="50" y="60" text-anchor="middle" font-size="8" fill="#999">баллов</text>
-    </svg>
-        <div class="score-verdict" style="color:#2ECC71;">Отлично</div>
+  <!-- ==== ОБЩАЯ ОЦЕНКА ==== -->
+  <div class="overall">
+    <div class="overall-head">
+      <div class="overall-left">
+        <div class="label">Общая оценка</div>
+        <div class="value">72<span class="max"> / 100</span></div>
       </div>
-      <div class="stats-grid">
-        <div class="stat-card" style="background:linear-gradient(180deg,#e8f8f0,#d4edda);border:1.5px solid #c3e6cb;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#2ECC71;border-radius:12px 12px 0 0;"></div>
-          <div class="stat-number" style="color:#27ae60;">37</div>
-          <div class="stat-label">Норма</div>
-          <div class="stat-sublabel">60%</div>
-        </div>
-        <div class="stat-card" style="background:linear-gradient(180deg,#fef9e7,#fdebd0);border:1.5px solid #f9e79f;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#F1C40F;border-radius:12px 12px 0 0;"></div>
-          <div class="stat-number" style="color:#d4a017;">15</div>
-          <div class="stat-label">Лёгкое</div>
-          <div class="stat-sublabel">24%</div>
-        </div>
-        <div class="stat-card" style="background:linear-gradient(180deg,#fdf2e9,#fbe0c4);border:1.5px solid #f5cba7;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E67E22;border-radius:12px 12px 0 0;"></div>
-          <div class="stat-number" style="color:#d35400;">8</div>
-          <div class="stat-label">Умеренное</div>
-          <div class="stat-sublabel">13%</div>
-        </div>
-        <div class="stat-card" style="background:linear-gradient(180deg,#fdedec,#f5c6cb);border:1.5px solid #f1948a;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#E74C3C;border-radius:12px 12px 0 0;"></div>
-          <div class="stat-number" style="color:#c0392b;">2</div>
-          <div class="stat-label">Выраженное</div>
-          <div class="stat-sublabel">3%</div>
-        </div>
+      <div style="padding-top: 20px;">
+        <span class="badge badge-ok">Хорошее</span>
       </div>
     </div>
+    <div class="overall-bar"><svg width="540" height="12" viewBox="0 0 540 12" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="540" height="12" rx="6.0" fill="#f1f1f1"/>
+      <rect x="0" y="0" width="388.8" height="12" rx="6.0" fill="#c7db5e"/>
+    </svg></div>
+  </div>
 
-    <!-- Карта тела -->
-    <div class="section-title">Карта тела — визуальная диагностика</div>
+  <!-- ==== СОСТАВ ТЕЛА ==== -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Состав тела</div>
+      <div class="card-score">24 / 30</div>
+    </div>
+    
+        <div class="metric-row">
+          <div class="metric-label">Рост</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="52.0" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="52.0" y="6.0" width="156.0" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="208.0" y="6.0" width="52.0" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="52.0" y1="2" x2="52.0" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="208.0" y1="2" x2="208.0" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="130.0" cy="9.0" r="7" fill="#c7db5e" stroke="#8fa939" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">175 см</div>
+          <div class="metric-badge"><span class="badge badge-ok">норма</span></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Вес</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="55.71428571428571" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="55.71428571428571" y="6.0" width="74.28571428571429" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="130.0" y="6.0" width="130.0" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="55.71428571428571" y1="2" x2="55.71428571428571" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="130.0" y1="2" x2="130.0" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="104.0" cy="9.0" r="7" fill="#c7db5e" stroke="#8fa939" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">78 кг</div>
+          <div class="metric-badge"><span class="badge badge-ok">норма</span></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">ИМТ</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="36.400000000000006" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="36.400000000000006" y="6.0" width="66.55999999999999" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="102.96" y="6.0" width="157.04000000000002" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="36.400000000000006" y1="2" x2="36.400000000000006" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="102.96" y1="2" x2="102.96" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="109.2" cy="9.0" r="7" fill="#ff7348" stroke="#c85a33" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">25.5</div>
+          <div class="metric-badge"><span class="badge badge-warn">выше нормы</span></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Жировая масса</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="74.28571428571428" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="74.28571428571428" y="6.0" width="74.28571428571428" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="148.57142857142856" y="6.0" width="111.42857142857144" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="74.28571428571428" y1="2" x2="74.28571428571428" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="148.57142857142856" y1="2" x2="148.57142857142856" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="126.28571428571428" cy="9.0" r="7" fill="#c7db5e" stroke="#8fa939" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">22 %</div>
+          <div class="metric-badge"><span class="badge badge-ok">норма</span></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Масса скел. мускулатуры</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="138.66666666666666" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="138.66666666666666" y="6.0" width="78.00000000000003" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="216.66666666666669" y="6.0" width="43.333333333333314" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="138.66666666666666" y1="2" x2="138.66666666666666" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="216.66666666666669" y1="2" x2="216.66666666666669" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="130.0" cy="9.0" r="7" fill="#ff7348" stroke="#c85a33" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">35 кг</div>
+          <div class="metric-badge"><span class="badge badge-warn">ниже нормы</span></div>
+        </div>
+  </div>
 
-    <div class="body-map-container">
-      <div class="body-map">
-        <div class="body-map-label">Вид спереди</div>
-        <svg id="svg" viewBox="-250 0 450 700" preserveAspectRatio="xMidYMid meet">
+  <!-- ==== СИЛА ==== -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Сила</div>
+      <div class="card-score">20 / 25</div>
+    </div>
+    
+        <div class="metric-row">
+          <div class="metric-label">Динамометрия правая</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="151.66666666666669" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="151.66666666666669" y="6.0" width="86.66666666666663" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="238.33333333333331" y="6.0" width="21.666666666666686" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="151.66666666666669" y1="2" x2="151.66666666666669" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="238.33333333333331" y1="2" x2="238.33333333333331" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="138.66666666666666" cy="9.0" r="7" fill="#ff7348" stroke="#c85a33" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">42 кг</div>
+          <div class="metric-badge"><span class="badge badge-warn">ниже нормы</span></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">Динамометрия левая</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="130.0" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="130.0" y="6.0" width="86.66666666666669" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="216.66666666666669" y="6.0" width="43.333333333333314" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="130.0" y1="2" x2="130.0" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="216.66666666666669" y1="2" x2="216.66666666666669" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="121.33333333333333" cy="9.0" r="7" fill="#ff7348" stroke="#c85a33" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">38 кг</div>
+          <div class="metric-badge"><span class="badge badge-warn">ниже нормы</span></div>
+        </div>
+  </div>
 
-      <g id="head" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-76.17647058823529,51.76470588235295)">
+  <!-- ==== ДЫХАНИЕ ==== -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Дыхание</div>
+      <div class="card-score">15 / 15</div>
+    </div>
+    
+        <div class="metric-row">
+          <div class="metric-label">Спирометрия</div>
+          <div class="metric-bar"><svg width="260" height="18" viewBox="0 0 260 18" xmlns="http://www.w3.org/2000/svg">
+      <!-- левый оранжевый сегмент -->
+      <rect x="0" y="6.0" width="97.5" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- зелёный (норма) -->
+      <rect x="97.5" y="6.0" width="130.0" height="6" rx="3.0" fill="#c7db5e"/>
+      <!-- правый оранжевый -->
+      <rect x="227.5" y="6.0" width="32.5" height="6" rx="3.0" fill="#ff7348"/>
+      <!-- вертикальные разделители нормы -->
+      <line x1="97.5" y1="2" x2="97.5" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <line x1="227.5" y1="2" x2="227.5" y2="16" stroke="#b8bac0" stroke-width="1"/>
+      <!-- кружок-маркер -->
+      <circle cx="143.0" cy="9.0" r="7" fill="#c7db5e" stroke="#8fa939" stroke-width="1.5"/>
+    </svg></div>
+          <div class="metric-value">4.2 л</div>
+          <div class="metric-badge"><span class="badge badge-ok">норма</span></div>
+        </div>
+  </div>
+
+  <!-- ==== ОСАНКА ==== -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Осанка</div>
+      <div class="card-score">13 / 30</div>
+    </div>
+    <div class="posture-list">
+      <div class="posture-row"><span class="dot"></span><span class="text">Гипермобильность грудного отдела</span></div><div class="posture-row"><span class="dot"></span><span class="text">Сутулость</span></div>
+    </div>
+  </div>
+
+  <!-- ==== ЖАЛОБЫ ==== -->
+  <div class="text-section">
+    <div class="label">Жалобы</div>
+    <div class="body">Боли в шейном отделе, периодические головные боли, дискомфорт в пояснице.</div>
+  </div>
+
+  <!-- ==== РЕКОМЕНДАЦИИ ==== -->
+  <div class="text-section">
+    <div class="label">Рекомендации</div>
+    <ol class="rec-list">
+      <li>ЛФК 3 раза в неделю</li><li>Массаж курсом 10 сеансов</li>
+    </ol>
+  </div>
+
+  <!-- ==== КАРТА ПРОБЛЕМНЫХ ЗОН ==== -->
+  <div class="body-map-wrap">
+    <div class="label">Карта проблемных зон</div>
+    <div class="body-map-row">
+      <div class="body svg-wrap"><svg class="body" viewBox="-250 0 450 700" preserveAspectRatio="xMidYMid meet">
+
+      <g id="head" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-76.17647058823529,51.76470588235295)">
         <path d="M45.1995 66C38.7995 76 31.1994 77 28.1994 77C26.6994 77 23.6994 76.5 
         20.6994 76C16.7539 75.3424 9.19945 69 8.19945 66C7.69945 61.5 6.69945 58.5
         5.19946 56C3.69947 53.5 1.69946 51.5 0.699455 45.5C-0.30055 39.5 2.69945 40
@@ -486,7 +614,7 @@
         45.1995 66Z"/>
       </g>
 
-      <g id="trap_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-96.61764705882352,124.55882352941177)">
+      <g id="trap_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-96.61764705882352,124.55882352941177)">
         <path d="M1.95096 24.7309C15.6565 22.3924 20.7145 11.09 21.5303 5.73108C21.3671 
         3.13282 21.1387 -1.38166 21.5303 1.34652C21.9219 4.07469 23.3251 7.355
         23.9777 8.65413C27.0778 15.7993 33.3758 30.3821 33.7674 31.5513C34.2569
@@ -494,7 +622,7 @@
         1.95096 24.7309Z"/>
       </g>
 
-      <g id="trap_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-41.61764705882355,124.55882352941177)">
+      <g id="trap_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-41.61764705882355,124.55882352941177)">
         <path d="M33.1875 25.3688C19.1875 22.9688 14.0208 11.3688 13.1875 5.86881C13.3542 
         3.20214 13.5875 -1.43119 13.1875 1.36881C12.7875 4.16881 11.3542 7.53547
         10.6875 8.86881C7.52083 16.2021 1.0875 31.1688 0.6875 32.3688C0.1875
@@ -502,7 +630,7 @@
         33.1875 25.3688Z"/>
       </g>
 
-      <g id="shoulder_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-143.08823529411765,150)">
+      <g id="shoulder_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-143.08823529411765,150)">
         <path d="M47.8822 0.721953C51.0558 1.12388 51.8493 3.23397 51.8493 4.23878C53.0063 
         4.23878 53.4361 4.74119 45.8986 6.7508C38.3611 8.76041 27.2202 28.3542
         22.5919 37.8999C22.096 38.4023 20.41 39.4071 17.6331 39.4071C14.8561
@@ -511,7 +639,7 @@
         0.554485 44.7085 0.32003 47.8822 0.721953Z"/>
       </g>
 
-      <g id="shoulder_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-11.764705882352974,150)">
+      <g id="shoulder_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-11.764705882352974,150)">
         <path d="M5.15613 0.720891C1.95613 1.12089 1.15613 3.22089 1.15613 4.22089C-0.0105336 
         4.22089 -0.443867 4.72089 7.15613 6.72089C14.7561 8.72088 25.9895
         28.2209 30.6561 37.7209C31.1561 38.2209 32.8561 39.2209 35.6561
@@ -521,33 +649,33 @@
         5.15613 0.720891Z"/>
       </g>
 
-      <g id="chest_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-117.05882352941177,155.73529411764704)">
+      <g id="chest_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-117.05882352941177,155.73529411764704)">
         <path d="M0.684595 38.2062C21.0846 58.2062 48.5179 53.2062 59.6846 48.2062C59.6846 
         42.8729 59.3846 29.6062 58.1846 19.2062C56.6846 6.20624 48.6846 7.70622
         35.1846 1.20622C21.6846 -5.29378 -1.81541 35.2062 0.684595 38.2062Z"/>
       </g>
 
-      <g id="chest_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-49.41176470588235,157.05882352941177)">
+      <g id="chest_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-49.41176470588235,157.05882352941177)">
         <path d="M59.3161 38.0781C38.9797 58.0102 11.6319 53.0272 0.5 48.0442C0.5 42.7289 
         0.799061 29.5074 1.99532 19.1427C3.49063 6.18686 11.4657 7.68175 24.9236
         1.20383C38.3815 -5.27409 61.8083 35.0883 59.3161 38.0781Z"/>
       </g>
 
-      <g id="abs_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-87.79411764705883,207.79411764705878)">
+      <g id="abs_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-87.79411764705883,207.79411764705878)">
         <path d="M31.4846 0.506382C25.3927 4.56178 9.65519 5.23768 2.54795 5.06871C2.54795 
         6.92744 2.24335 14.5989 1.02497 30.415C-0.49801 50.1851 1.02497 63.3651
         9.14753 101.384C13.2088 136.666 26.408 144.135 32.4999 143.459V28.8942C32.4999
         19.2626 32.2968 0.100842 31.4846 0.506382Z"/>
       </g>
 
-      <g id="abs_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-51.764705882352956,207.79411764705878)">
+      <g id="abs_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-51.764705882352956,207.79411764705878)">
         <path d="M1.48359 0.506382C7.38514 4.56178 22.6308 5.23768 29.5159 5.06871C29.5159 
         6.92744 29.811 14.5989 30.9913 30.415C32.4667 50.1851 30.9913 63.3651
         23.1226 101.384C19.1882 136.666 6.40155 144.135 0.5 143.459V28.8942C0.5
         19.2626 0.696718 0.100842 1.48359 0.506382Z"/>
       </g>
 
-      <g id="side_leg_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-126.0294117647059,303.97058823529414)">
+      <g id="side_leg_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-126.0294117647059,303.97058823529414)">
         <path d="M2.86957 112.732C-1.42189 97.4723 1.08146 72.5747 2.86957 62.0334C2.86957 
         59.1889 2.96709 52.5964 3.35723 48.9823C3.84489 44.4646 8.23389 21.3741
         17.4996 0.793488C21.0108 3.6045 22.5388 4.97654 22.8639 5.31119C22.7013
@@ -559,7 +687,7 @@
         2.86957 112.732Z"/>
       </g>
 
-      <g id="side_leg_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-2.794117647058844,306.61764705882354)">
+      <g id="side_leg_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-2.794117647058844,306.61764705882354)">
         <path d="M21.6522 112.281C26.0522 97.0807 23.4855 72.2807 21.6522 61.7807C21.6522 
         58.9473 21.5522 52.3807 21.1522 48.7807C20.6522 44.2807 16.1522 21.2807
         6.65222 0.78067C3.05222 3.58067 1.48556 4.94734 1.15222 5.28067C1.31889
@@ -571,7 +699,7 @@
         21.6522 112.281Z"/>
       </g>
 
-      <g id="biceps_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-153.97058823529412,194.41176470588235)">
+      <g id="biceps_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-153.97058823529412,194.41176470588235)">
         <path d="M36.2427 4.89576C39.2972 7.90919 38.7881 7.90919 39.2972 8.91368C39.6366 
         11.5923 39.6026 19.3603 38.7881 24.9853C37.7699 32.0167 33.1883 42.0615
         30.1339 49.0928C28.0976 58.1332 1.62587 65.1645 1.62587 63.1556C-1.42856
@@ -580,7 +708,7 @@
         -1.63335 31.8487 0.560787 36.2427 4.89576Z"/>
       </g>
 
-      <g id="biceps_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(9.852941176470605,194.41176470588232)">
+      <g id="biceps_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(9.852941176470605,194.41176470588232)">
         <path d="M3.69921 4.87621C0.699188 7.8762 1.19921 7.8762 0.699188 8.87621C0.365851 
         11.5429 0.399203 19.2762 1.19921 24.8762C2.19922 31.8762 6.6992 41.8762
         9.6992 48.8762C11.6992 57.8762 37.6992 64.8762 37.6992 62.8762C40.6992
@@ -589,7 +717,7 @@
         -1.62379 8.0149 0.560565 3.69921 4.87621Z"/>
       </g>
 
-      <g id="forearm_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-192.5,243.8235294117647)">
+      <g id="forearm_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-192.5,243.8235294117647)">
         <path d="M37.5437 19.9325C39.512 21.4325 55.258 14.9325 62.639 10.9325C61.8189 
         14.5992 60.2544 23.4325 59.6866 25.9325C56.7342 38.9325 43.9406 47.4325
         40.0041 50.4325C23.8644 61.6325 15.5649 78.0992 13.4326 84.9325L0.638977
@@ -598,7 +726,7 @@
         19.9325Z"/>
       </g>
 
-      <g id="forearm_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(24.705882352941188,245.1470588235294)">
+      <g id="forearm_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(24.705882352941188,245.1470588235294)">
         <path d="M26.23 19.9243C24.23 21.4243 8.23003 14.9243 0.730026 10.9243C1.56336 
         14.591 3.1531 23.4243 3.73003 25.9243C6.73003 38.9243 19.73 47.4243
         23.73 50.4243C40.13 61.6243 48.5634 78.091 50.73 84.9243L63.73 75.4243C60.0634
@@ -606,7 +734,7 @@
         0.924316C27.73 2.42432 29.1145 17.761 26.23 19.9243Z"/>
       </g>
 
-      <g id="hand_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-227.20588235294116,321.7647058823529)">
+      <g id="hand_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-227.20588235294116,321.7647058823529)">
         <path d="M22.6643 17.3308C26.2407 16.1262 31.6052 5.28463 33.592 0.767303L47.5 
         10.8058C45.6787 12.9808 41.9368 19.6397 41.5395 28.8751C41.0427 40.4194
         37.5658 43.9329 35.5789 48.4502C22.6643 72.0406 26.1413 54.9752 30.115
@@ -619,7 +747,7 @@
         24.3578C12.73 22.3501 18.1939 18.8366 22.6643 17.3308Z"/>
       </g>
 
-      <g id="hand_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(75.44117647058822,321.7647058823529)">
+      <g id="hand_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(75.44117647058822,321.7647058823529)">
         <path d="M25.7323 17.263C22.1323 16.063 16.7323 5.26305 14.7323 0.763046L0.7323 
         10.763C2.56563 12.9297 6.3323 19.563 6.7323 28.763C7.2323 40.263 10.7323
         43.763 12.7323 48.263C25.7323 71.763 22.2323 54.763 18.2323 46.763C18.2323
@@ -632,7 +760,7 @@
         22.263 30.2323 18.763 25.7323 17.263Z"/>
       </g>
 
-      <g id="oblique_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-112.79411764705884,203.08823529411762)">
+      <g id="oblique_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-112.79411764705884,203.08823529411762)">
         <path d="M1.83784 0.537775C8.25946 6.39358 19.0811 8.18286 23.6892 8.34552V12.2494C19.6757 
         23.961 21.9054 49.8242 21.9054 56.1679C21.9054 62.5117 22.7973 65.4396
         22.7973 68.3675C22.7973 71.2954 26.8108 89.8388 26.8108 95.2067C26.8108
@@ -643,7 +771,7 @@
         17.1292C0.5 11.2734 0.767567 -0.242999 1.83784 0.537775Z"/>
       </g>
 
-      <g id="oblique_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-27.647058823529434,205.73529411764704)">
+      <g id="oblique_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-27.647058823529434,205.73529411764704)">
         <path d="M32.1993 0.537775C25.7777 6.39358 14.9561 8.18286 10.348 8.34552V12.2494C14.3615 
         23.961 12.1317 49.8242 12.1317 56.1679C12.1317 62.5117 11.2398 65.4396
         11.2398 68.3675C11.2398 71.2955 7.22633 89.8388 7.22633 95.2067C7.22633
@@ -654,7 +782,7 @@
         17.1292C33.5371 11.2734 33.2696 -0.242999 32.1993 0.537775Z"/>
       </g>
 
-      <g id="adductor_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-99.7058823529412,312.64705882352945)">
+      <g id="adductor_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-99.7058823529412,312.64705882352945)">
         <path d="M39.3444 54.6569C40.1412 63.4569 37.6844 76.9902 36.3564 82.6569C35.8584 
         85.4902 34.5636 93.6569 33.3683 103.657C31.8743 116.157 25.4003 134.657
         23.9062 136.657C23.4082 131.157 22.4122 122.657 21.4162 115.157C20.4202
@@ -665,7 +793,7 @@
         43.3236 38.5476 45.8569 39.3444 54.6569Z"/>
       </g>
 
-      <g id="adductor_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-46.47058823529411,316.61764705882354)">
+      <g id="adductor_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-46.47058823529411,316.61764705882354)">
         <path d="M0.656054 54.6514C-0.143946 63.4514 2.32272 76.9847 3.65605 82.6514C4.15605 
         85.4847 5.45605 93.6514 6.65605 103.651C8.15605 116.151 14.6561 134.651
         16.1561 136.651C16.6561 131.151 17.6561 122.651 18.6561 115.151C19.6561
@@ -676,7 +804,7 @@
         43.3181 1.45605 45.8514 0.656054 54.6514Z"/>
       </g>
 
-      <g id="quad_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-115.88235294117648,343.2352941176471)">
+      <g id="quad_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-115.88235294117648,343.2352941176471)">
         <path d="M15.1875 0.15773C14.6917 1.99106 13.0059 6.15773 10.2292 8.15773C7.45256 
         10.1577 2.79173 15.6577 0.808404 18.1577C0.14729 29.4911 0.114228 55.2577
         5.27089 67.6577C11.7167 83.1577 12.2125 91.1577 23.6167 104.658C23.9472
@@ -687,7 +815,7 @@
         16.675 5.15773C15.0861 2.35773 15.0213 0.65773 15.1875 0.15773Z"/>
       </g>
 
-      <g id="quad_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-27.205882352941178,345.88235294117646)">
+      <g id="quad_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-27.205882352941178,345.88235294117646)">
         <path d="M23 0.15892C23.5 1.99225 25.2 6.15892 28 8.15892C30.8 10.1589 35.5 15.6589 
         37.5 18.1589C38.1667 29.4923 38.2 55.2589 33 67.6589C26.5 83.1589 26 91.1589
         14.5 104.659C14.1667 104.992 12.8 106.559 10 110.159C7.2 113.759 2.5
@@ -697,7 +825,7 @@
         2.35892 23.1676 0.65892 23 0.15892Z"/>
       </g>
 
-      <g id="knee_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-118.82352941176471,440.2941176470588)">
+      <g id="knee_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-118.82352941176471,440.2941176470588)">
         <path d="M30.1072 16.8762C32.8786 21.286 38.1905 22.7225 40.5 22.8895V26.8984C40.5 
         29.9051 37.0357 38.4241 34.0664 45.4397C30.1072 50.9519 18.2298 43.9363
         17.24 41.4307C16.2502 38.9252 11.7962 29.9051 9.32171 32.9118C4.37278
@@ -708,7 +836,7 @@
         10.8628 26.643 12.8673 30.1072 16.8762Z"/>
       </g>
 
-      <g id="knee_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-26.470588235294116,442.9411764705883)">
+      <g id="knee_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-26.470588235294116,442.9411764705883)">
         <path d="M11 16.8398C8.2 21.2398 2.83333 22.6731 0.5 22.8398V26.8398C0.5 29.8398 
         4 38.3398 7 45.3398C11 50.8398 23 43.8398 24 41.3398C25 38.8398 29.5
         29.8398 32 32.8398C37 39.3398 40.5 40.3398 40.5 38.3398C38 27.3398 39
@@ -717,7 +845,7 @@
         -0.660237 19 6.83976 17.5 8.83976C16 10.8398 14.5 12.8398 11 16.8398Z"/>
       </g>
 
-      <g id="calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-129.11764705882354,476.17647058823536)">
+      <g id="calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-129.11764705882354,476.17647058823536)">
         <path d="M27.3994 10.7398C30.1065 13.9178 38.8403 14.3813 42.8688 14.2158H43.8499C44.3404 
         14.4682 45.0271 20.2631 43.8499 41.4234C42.3783 67.8738 34.0393 81.8476
         31.5867 88.3355C29.134 94.8233 27.1719 97.8177 25.2098 108.298C23.6401
@@ -729,7 +857,7 @@
         10.7398Z"/>
       </g>
 
-      <g id="calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-19.558823529411764,478.82352941176464)">
+      <g id="calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-19.558823529411764,478.82352941176464)">
         <path d="M17.6068 10.7398C14.8987 13.9178 6.16168 14.3813 2.13169 14.2158H1.15027C0.659561 
         14.4682 -0.0274332 20.2631 1.15027 41.4234C2.6224 67.8738 10.9645
         81.8476 13.418 88.3355C15.8716 94.8233 17.8344 97.8177 19.7973
@@ -740,7 +868,7 @@
         20.992 6.76729 17.6068 10.7398Z"/>
       </g>
 
-      <g id="foot_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-142.05882352941177,582.2058823529412)">
+      <g id="foot_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-142.05882352941177,582.2058823529412)">
         <path d="M14.685 32.8048C15.6896 25.7544 16.6941 23.2364 18.7033 18.2004V6.61774C19.2056 
         4.60337 26.7843 -1.36575 28.2468 1.07816C29.7537 3.5962 31.405
         6.49339 31.7629 7.12135C33.7721 10.6465 34.3031 11.4618 35.2789
@@ -754,7 +882,7 @@
         32.8048Z"/>
       </g>
 
-      <g id="foot_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-3.676470588235304,584.8529411764706)">
+      <g id="foot_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-3.676470588235304,584.8529411764706)">
         <path d="M27.1926 32.574C26.1926 25.574 25.1926 23.074 23.1926 18.074V6.57404C22.6926 
         4.57406 15.1484 -1.35242 13.6926 1.07403C12.1926 3.57408 10.5488
         6.45057 10.1926 7.07405C8.19257 10.5741 7.66394 11.3835 6.69257
@@ -768,7 +896,7 @@
         32.574Z"/>
       </g>
 
-      <g id="back_head" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(443.38235294117646,51.32352941176472)">
+      <g id="back_head" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(443.38235294117646,51.32352941176472)">
         <path d="
           M40.3801 62.0201
           C37.5801 65.6201 29.5468 66.1868 25.8801 66.0201
@@ -782,7 +910,7 @@
           Z" />
       </g>
 
-      <g id="back_side_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(404.2647058823529,261.764705882353)">
+      <g id="back_side_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(404.2647058823529,261.764705882353)">
         <path d="
           M29.315 24.0069
           C28.915 14.4069 19.1484 4.67358 14.315 1.00691
@@ -798,7 +926,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(380.4411764705883,465)">
+      <g id="back_side_calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(380.4411764705883,465)">
         <path d="
           M26 8.0804
           L15.5 15.5804
@@ -813,7 +941,7 @@
           Z"/>
       </g>
 
-      <g id="back_calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(401.3235294117646,486.6176470588234)">
+      <g id="back_calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(401.3235294117646,486.6176470588234)">
         <path d="
           M26.875 22.1514
           C26.875 18.9514 19.5417 7.15139 15.875 1.65139
@@ -827,7 +955,7 @@
           Z"/>
       </g>
 
-      <g id="back_quadratus_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(411.4705882352941,198.38235294117644)">
+      <g id="back_quadratus_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(411.4705882352941,198.38235294117644)">
         <path d="
           M10.5 9.39334
           C6.5 10.1933 2.16667 7.06001 0.5 5.39335
@@ -845,7 +973,7 @@
           Z"/>
       </g>
 
-      <g id="back_hand_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(296.3235294117647,341.3235294117647)">
+      <g id="back_hand_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(296.3235294117647,341.3235294117647)">
         <path d="
           M46.5267 5.6296
           C41.7267 7.6296 32.1934 3.1296 28.0267 0.629601
@@ -866,7 +994,7 @@
           Z"/>
       </g>
 
-      <g id="back_scapula_l" class="zone" style="fill:rgba(231,76,60,0.45);stroke:#E74C3C;stroke-width:1.5" transform="translate(406.17647058823525,148.67647058823533)">
+      <g id="back_scapula_l" class="zone" style="fill:rgba(249,67,94,0.55);stroke:#f9435e;stroke-width:1.2" transform="translate(406.17647058823525,148.67647058823533)">
         <path d="
           M38.5321 27.703
           C38.5321 12.503 31.5321 3.3697 28.0321 0.703033
@@ -879,7 +1007,7 @@
           Z"/>
       </g>
 
-      <g id="back_lowerback_l" class="zone" style="fill:rgba(231,76,60,0.45);stroke:#E74C3C;stroke-width:1.5" transform="translate(439.2647058823529,245.2941176470589)">
+      <g id="back_lowerback_l" class="zone" style="fill:rgba(249,67,94,0.55);stroke:#f9435e;stroke-width:1.2" transform="translate(439.2647058823529,245.2941176470589)">
         <path d="
           M13.8126 9.73851
           C15.8126 6.53851 24.6459 2.40518 28.8126 0.73851
@@ -891,7 +1019,7 @@
           Z"/>
       </g>
 
-      <g id="back_abductor_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(398.23529411764713,350.4411764705881)">
+      <g id="back_abductor_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(398.23529411764713,350.4411764705881)">
         <path d="
           M10.8561 1.17887
           L5.35606 5.67887
@@ -909,7 +1037,7 @@
           Z"/>
       </g>
 
-      <g id="back_shoulder_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(378.38235294117646,143.2352941176471)">
+      <g id="back_shoulder_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(378.38235294117646,143.2352941176471)">
         <path d="
           M4.58148 18.2082
           C17.7815 1.80823 39.7481 -0.291773 49.0815 0.708227
@@ -922,7 +1050,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(501.4705882352942,260.44117647058823)">
+      <g id="back_side_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(501.4705882352942,260.44117647058823)">
         <path d="
           M5.07362 23.9638
           C5.4821 14.3762 15.4558 4.65547 20.3915 0.993546
@@ -938,7 +1066,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(523.9705882352941,468.97058823529414)">
+      <g id="back_side_calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(523.9705882352941,468.97058823529414)">
         <path d="
           M8.73837 8.079
           L19.3461 15.5776
@@ -953,7 +1081,7 @@
           Z"/>
       </g>
 
-      <g id="back_calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(511.7647058823529,489.26470588235287)">
+      <g id="back_calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(511.7647058823529,489.26470588235287)">
         <path d="
           M0.5 21.9955
           C0.5 18.8211 7.72907 7.11587 11.3436 1.66002
@@ -967,7 +1095,7 @@
           Z"/>
       </g>
 
-      <g id="back_quadratus_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(472.9411764705882,198.38235294117652)">
+      <g id="back_quadratus_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(472.9411764705882,198.38235294117652)">
         <path d="
           M45.5377 9.40281
           C49.5226 10.2037 53.8396 7.06699 55.5 5.39855
@@ -985,7 +1113,7 @@
           Z"/>
       </g>
 
-      <g id="back_hand_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(588.0882352941176,339.99999999999994)">
+      <g id="back_hand_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(588.0882352941176,339.99999999999994)">
         <path d="
           M9.26165 5.97793
           C14.3965 8.11727 24.5949 3.30375 29.0522 0.629578
@@ -1006,7 +1134,7 @@
           Z"/>
       </g>
 
-      <g id="back_scapula_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(494.1176470588235,148.67647058823528)">
+      <g id="back_scapula_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(494.1176470588235,148.67647058823528)">
         <path d="
           M1.49917 27.6857
           C1.49917 12.4955 8.49338 3.36804 11.9905 0.703094
@@ -1019,7 +1147,7 @@
           Z"/>
       </g>
 
-      <g id="back_lowerback_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(471.61764705882354,245.29411764705884)">
+      <g id="back_lowerback_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(471.61764705882354,245.29411764705884)">
         <path d="
           M15.864 9.7555
           C13.8155 6.5474 4.76778 2.4036 0.5 0.732712
@@ -1031,7 +1159,7 @@
           Z"/>
       </g>
 
-      <g id="back_abductor_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(504.7058823529412,353.0882352941175)">
+      <g id="back_abductor_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(504.7058823529412,353.0882352941175)">
         <path d="
   M26.8121 1.19223
   L32.2368 5.71045
@@ -1049,7 +1177,7 @@
   Z"/>
       </g>
 
-      <g id="back_shoulder_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(510.0000000000002,144.5588235294119)">
+      <g id="back_shoulder_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(510.0000000000002,144.5588235294119)">
         <path d="
   M47.4145 18.0504
   C34.201 1.79657 12.2119 -0.284718 2.86903 0.706372
@@ -1062,7 +1190,7 @@
   Z"/>
       </g>
 
-      <g id="back_forearm_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(553.2352941176471,250.1470588235294)">
+      <g id="back_forearm_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(553.2352941176471,250.1470588235294)">
         <path d="
   M19.5654 9.77952
   C17.2048 12.5366 6.45075 11.5847 1.36882 10.7642
@@ -1079,7 +1207,7 @@
   Z"/>
       </g>
 
-      <g id="back_trap_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(430.1470588235294,101.91176470588236)">
+      <g id="back_trap_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(430.1470588235294,101.91176470588236)">
         <path d="
   M27.4322 14.6709
   C21.4322 11.8709 17.2656 3.83753 15.9322 0.170868
@@ -1091,7 +1219,7 @@
   Z"/>
       </g>
 
-      <g id="back_trap_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(472.5,101.91176470588235)">
+      <g id="back_trap_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(472.5,101.91176470588235)">
         <path d="
   M11.1438 15.017
   C17.226 12.1498 21.4498 3.92391 22.8014 0.169342
@@ -1103,7 +1231,7 @@
   Z"/>
       </g>
 
-      <g id="back_triceps_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(366.61764705882354,185.29411764705884)">
+      <g id="back_triceps_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(366.61764705882354,185.29411764705884)">
         <path d="
           M20.2654 8.04777
           C18.2654 9.64777 14.4321 14.3811 12.7654 16.5478
@@ -1118,7 +1246,7 @@
           Z"/>
       </g>
 
-      <g id="back_triceps_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(530.7352941176471,186.61764705882354)">
+      <g id="back_triceps_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(530.7352941176471,186.61764705882354)">
         <path d="
           M22.7729 8.08513
           C24.7689 9.69304 28.5946 14.4498 30.258 16.6272
@@ -1133,7 +1261,7 @@
           Z"/>
       </g>
 
-      <g id="back_glute_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(411.61764705882354,303.0882352941177)">
+      <g id="back_glute_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(411.61764705882354,303.0882352941177)">
         <path d="
   M30.186 0.577573
   C42.586 -0.622427 53.0194 12.4109 56.686 19.0776
@@ -1148,7 +1276,7 @@
   Z"/>
       </g>
 
-      <g id="back_glute_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(473.82352941176475,304.4117647058823)">
+      <g id="back_glute_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(473.82352941176475,304.4117647058823)">
         <path d="
   M26.9123 0.577686
   C14.5533 -0.623834 4.15453 12.426 0.5 19.1011
@@ -1163,7 +1291,7 @@
   Z"/>
       </g>
 
-      <g id="back_forearm_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(326.9117647058824,248.82352941176475)">
+      <g id="back_forearm_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(326.9117647058824,248.82352941176475)">
         <path d="
   M42.1169 9.92407
   C44.5169 12.7241 55.4502 11.7574 60.6169 10.9241
@@ -1179,7 +1307,7 @@
   Z"/>
       </g>
 
-      <g id="back_adductor_l_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(418.235294117647,383.82352941176475)">
+      <g id="back_adductor_l_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(418.235294117647,383.82352941176475)">
         <path d="
   M46.5051 0.790525
   C45.3051 3.19052 28.6718 4.12386 20.5051 4.29052
@@ -1194,7 +1322,7 @@
   Z"/>
       </g>
 
-      <g id="back_adductor_r_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(475.14705882352945,385.1470588235294)">
+      <g id="back_adductor_r_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(475.14705882352945,385.1470588235294)">
         <path d="
   M1.16739 0.792267
   C2.37607 3.20666 19.1297 4.1456 27.3554 4.31326
@@ -1209,7 +1337,7 @@
   Z"/>
       </g>
 
-      <g id="back_erector_l_new" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(432.79411764705884,135)">
+      <g id="back_erector_l_new" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(432.79411764705884,135)">
         <path d="
           M36.8454 0.715027
           C28.1787 3.88169 9.4454 10.115 3.8454 9.71503
@@ -1222,7 +1350,7 @@
           Z"/>
       </g>
 
-      <g id="back_erector_r_new" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(471.1764705882353,135)">
+      <g id="back_erector_r_new" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(471.1764705882353,135)">
         <path d="
           M34.0943 9.89189
           C28.3934 10.2997 9.32273 3.94418 0.5 0.715424
@@ -1235,7 +1363,7 @@
           Z"/>
       </g>
 
-      <g id="back_foot_l_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(375.88235294117646,549.2647058823529)">
+      <g id="back_foot_l_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(375.88235294117646,549.2647058823529)">
         <path d="
           M15.78 7.80816
           C10.18 14.6082 5.44662 15.3082 3.77995 14.8082
@@ -1252,7 +1380,7 @@
           Z"/>
       </g>
 
-      <g id="back_foot_r_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(524.1176470588236,554.5588235294118)">
+      <g id="back_foot_r_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(524.1176470588236,554.5588235294118)">
         <path d="
           M23.5291 7.83834
           C29.0158 14.6664 33.6534 15.3693 35.2863 14.8672
@@ -1268,13 +1396,10 @@
           C16.1808 -1.19881 16.6707 -0.696742 23.5291 7.83834
           Z"/>
       </g>
-    </svg>
-      </div>
-      <div class="body-map">
-        <div class="body-map-label">Вид сзади</div>
-        <svg id="svg" viewBox="280 0 450 700" preserveAspectRatio="xMidYMid meet">
+    </svg></div>
+      <div class="body svg-wrap"><svg class="body" viewBox="280 0 450 700" preserveAspectRatio="xMidYMid meet">
 
-      <g id="head" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-76.17647058823529,51.76470588235295)">
+      <g id="head" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-76.17647058823529,51.76470588235295)">
         <path d="M45.1995 66C38.7995 76 31.1994 77 28.1994 77C26.6994 77 23.6994 76.5 
         20.6994 76C16.7539 75.3424 9.19945 69 8.19945 66C7.69945 61.5 6.69945 58.5
         5.19946 56C3.69947 53.5 1.69946 51.5 0.699455 45.5C-0.30055 39.5 2.69945 40
@@ -1285,7 +1410,7 @@
         45.1995 66Z"/>
       </g>
 
-      <g id="trap_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-96.61764705882352,124.55882352941177)">
+      <g id="trap_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-96.61764705882352,124.55882352941177)">
         <path d="M1.95096 24.7309C15.6565 22.3924 20.7145 11.09 21.5303 5.73108C21.3671 
         3.13282 21.1387 -1.38166 21.5303 1.34652C21.9219 4.07469 23.3251 7.355
         23.9777 8.65413C27.0778 15.7993 33.3758 30.3821 33.7674 31.5513C34.2569
@@ -1293,7 +1418,7 @@
         1.95096 24.7309Z"/>
       </g>
 
-      <g id="trap_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-41.61764705882355,124.55882352941177)">
+      <g id="trap_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-41.61764705882355,124.55882352941177)">
         <path d="M33.1875 25.3688C19.1875 22.9688 14.0208 11.3688 13.1875 5.86881C13.3542 
         3.20214 13.5875 -1.43119 13.1875 1.36881C12.7875 4.16881 11.3542 7.53547
         10.6875 8.86881C7.52083 16.2021 1.0875 31.1688 0.6875 32.3688C0.1875
@@ -1301,7 +1426,7 @@
         33.1875 25.3688Z"/>
       </g>
 
-      <g id="shoulder_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-143.08823529411765,150)">
+      <g id="shoulder_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-143.08823529411765,150)">
         <path d="M47.8822 0.721953C51.0558 1.12388 51.8493 3.23397 51.8493 4.23878C53.0063 
         4.23878 53.4361 4.74119 45.8986 6.7508C38.3611 8.76041 27.2202 28.3542
         22.5919 37.8999C22.096 38.4023 20.41 39.4071 17.6331 39.4071C14.8561
@@ -1310,7 +1435,7 @@
         0.554485 44.7085 0.32003 47.8822 0.721953Z"/>
       </g>
 
-      <g id="shoulder_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-11.764705882352974,150)">
+      <g id="shoulder_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-11.764705882352974,150)">
         <path d="M5.15613 0.720891C1.95613 1.12089 1.15613 3.22089 1.15613 4.22089C-0.0105336 
         4.22089 -0.443867 4.72089 7.15613 6.72089C14.7561 8.72088 25.9895
         28.2209 30.6561 37.7209C31.1561 38.2209 32.8561 39.2209 35.6561
@@ -1320,33 +1445,33 @@
         5.15613 0.720891Z"/>
       </g>
 
-      <g id="chest_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-117.05882352941177,155.73529411764704)">
+      <g id="chest_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-117.05882352941177,155.73529411764704)">
         <path d="M0.684595 38.2062C21.0846 58.2062 48.5179 53.2062 59.6846 48.2062C59.6846 
         42.8729 59.3846 29.6062 58.1846 19.2062C56.6846 6.20624 48.6846 7.70622
         35.1846 1.20622C21.6846 -5.29378 -1.81541 35.2062 0.684595 38.2062Z"/>
       </g>
 
-      <g id="chest_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-49.41176470588235,157.05882352941177)">
+      <g id="chest_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-49.41176470588235,157.05882352941177)">
         <path d="M59.3161 38.0781C38.9797 58.0102 11.6319 53.0272 0.5 48.0442C0.5 42.7289 
         0.799061 29.5074 1.99532 19.1427C3.49063 6.18686 11.4657 7.68175 24.9236
         1.20383C38.3815 -5.27409 61.8083 35.0883 59.3161 38.0781Z"/>
       </g>
 
-      <g id="abs_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-87.79411764705883,207.79411764705878)">
+      <g id="abs_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-87.79411764705883,207.79411764705878)">
         <path d="M31.4846 0.506382C25.3927 4.56178 9.65519 5.23768 2.54795 5.06871C2.54795 
         6.92744 2.24335 14.5989 1.02497 30.415C-0.49801 50.1851 1.02497 63.3651
         9.14753 101.384C13.2088 136.666 26.408 144.135 32.4999 143.459V28.8942C32.4999
         19.2626 32.2968 0.100842 31.4846 0.506382Z"/>
       </g>
 
-      <g id="abs_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-51.764705882352956,207.79411764705878)">
+      <g id="abs_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-51.764705882352956,207.79411764705878)">
         <path d="M1.48359 0.506382C7.38514 4.56178 22.6308 5.23768 29.5159 5.06871C29.5159 
         6.92744 29.811 14.5989 30.9913 30.415C32.4667 50.1851 30.9913 63.3651
         23.1226 101.384C19.1882 136.666 6.40155 144.135 0.5 143.459V28.8942C0.5
         19.2626 0.696718 0.100842 1.48359 0.506382Z"/>
       </g>
 
-      <g id="side_leg_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-126.0294117647059,303.97058823529414)">
+      <g id="side_leg_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-126.0294117647059,303.97058823529414)">
         <path d="M2.86957 112.732C-1.42189 97.4723 1.08146 72.5747 2.86957 62.0334C2.86957 
         59.1889 2.96709 52.5964 3.35723 48.9823C3.84489 44.4646 8.23389 21.3741
         17.4996 0.793488C21.0108 3.6045 22.5388 4.97654 22.8639 5.31119C22.7013
@@ -1358,7 +1483,7 @@
         2.86957 112.732Z"/>
       </g>
 
-      <g id="side_leg_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-2.794117647058844,306.61764705882354)">
+      <g id="side_leg_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-2.794117647058844,306.61764705882354)">
         <path d="M21.6522 112.281C26.0522 97.0807 23.4855 72.2807 21.6522 61.7807C21.6522 
         58.9473 21.5522 52.3807 21.1522 48.7807C20.6522 44.2807 16.1522 21.2807
         6.65222 0.78067C3.05222 3.58067 1.48556 4.94734 1.15222 5.28067C1.31889
@@ -1370,7 +1495,7 @@
         21.6522 112.281Z"/>
       </g>
 
-      <g id="biceps_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-153.97058823529412,194.41176470588235)">
+      <g id="biceps_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-153.97058823529412,194.41176470588235)">
         <path d="M36.2427 4.89576C39.2972 7.90919 38.7881 7.90919 39.2972 8.91368C39.6366 
         11.5923 39.6026 19.3603 38.7881 24.9853C37.7699 32.0167 33.1883 42.0615
         30.1339 49.0928C28.0976 58.1332 1.62587 65.1645 1.62587 63.1556C-1.42856
@@ -1379,7 +1504,7 @@
         -1.63335 31.8487 0.560787 36.2427 4.89576Z"/>
       </g>
 
-      <g id="biceps_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(9.852941176470605,194.41176470588232)">
+      <g id="biceps_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(9.852941176470605,194.41176470588232)">
         <path d="M3.69921 4.87621C0.699188 7.8762 1.19921 7.8762 0.699188 8.87621C0.365851 
         11.5429 0.399203 19.2762 1.19921 24.8762C2.19922 31.8762 6.6992 41.8762
         9.6992 48.8762C11.6992 57.8762 37.6992 64.8762 37.6992 62.8762C40.6992
@@ -1388,7 +1513,7 @@
         -1.62379 8.0149 0.560565 3.69921 4.87621Z"/>
       </g>
 
-      <g id="forearm_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-192.5,243.8235294117647)">
+      <g id="forearm_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-192.5,243.8235294117647)">
         <path d="M37.5437 19.9325C39.512 21.4325 55.258 14.9325 62.639 10.9325C61.8189 
         14.5992 60.2544 23.4325 59.6866 25.9325C56.7342 38.9325 43.9406 47.4325
         40.0041 50.4325C23.8644 61.6325 15.5649 78.0992 13.4326 84.9325L0.638977
@@ -1397,7 +1522,7 @@
         19.9325Z"/>
       </g>
 
-      <g id="forearm_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(24.705882352941188,245.1470588235294)">
+      <g id="forearm_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(24.705882352941188,245.1470588235294)">
         <path d="M26.23 19.9243C24.23 21.4243 8.23003 14.9243 0.730026 10.9243C1.56336 
         14.591 3.1531 23.4243 3.73003 25.9243C6.73003 38.9243 19.73 47.4243
         23.73 50.4243C40.13 61.6243 48.5634 78.091 50.73 84.9243L63.73 75.4243C60.0634
@@ -1405,7 +1530,7 @@
         0.924316C27.73 2.42432 29.1145 17.761 26.23 19.9243Z"/>
       </g>
 
-      <g id="hand_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-227.20588235294116,321.7647058823529)">
+      <g id="hand_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-227.20588235294116,321.7647058823529)">
         <path d="M22.6643 17.3308C26.2407 16.1262 31.6052 5.28463 33.592 0.767303L47.5 
         10.8058C45.6787 12.9808 41.9368 19.6397 41.5395 28.8751C41.0427 40.4194
         37.5658 43.9329 35.5789 48.4502C22.6643 72.0406 26.1413 54.9752 30.115
@@ -1418,7 +1543,7 @@
         24.3578C12.73 22.3501 18.1939 18.8366 22.6643 17.3308Z"/>
       </g>
 
-      <g id="hand_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(75.44117647058822,321.7647058823529)">
+      <g id="hand_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(75.44117647058822,321.7647058823529)">
         <path d="M25.7323 17.263C22.1323 16.063 16.7323 5.26305 14.7323 0.763046L0.7323 
         10.763C2.56563 12.9297 6.3323 19.563 6.7323 28.763C7.2323 40.263 10.7323
         43.763 12.7323 48.263C25.7323 71.763 22.2323 54.763 18.2323 46.763C18.2323
@@ -1431,7 +1556,7 @@
         22.263 30.2323 18.763 25.7323 17.263Z"/>
       </g>
 
-      <g id="oblique_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-112.79411764705884,203.08823529411762)">
+      <g id="oblique_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-112.79411764705884,203.08823529411762)">
         <path d="M1.83784 0.537775C8.25946 6.39358 19.0811 8.18286 23.6892 8.34552V12.2494C19.6757 
         23.961 21.9054 49.8242 21.9054 56.1679C21.9054 62.5117 22.7973 65.4396
         22.7973 68.3675C22.7973 71.2954 26.8108 89.8388 26.8108 95.2067C26.8108
@@ -1442,7 +1567,7 @@
         17.1292C0.5 11.2734 0.767567 -0.242999 1.83784 0.537775Z"/>
       </g>
 
-      <g id="oblique_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-27.647058823529434,205.73529411764704)">
+      <g id="oblique_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-27.647058823529434,205.73529411764704)">
         <path d="M32.1993 0.537775C25.7777 6.39358 14.9561 8.18286 10.348 8.34552V12.2494C14.3615 
         23.961 12.1317 49.8242 12.1317 56.1679C12.1317 62.5117 11.2398 65.4396
         11.2398 68.3675C11.2398 71.2955 7.22633 89.8388 7.22633 95.2067C7.22633
@@ -1453,7 +1578,7 @@
         17.1292C33.5371 11.2734 33.2696 -0.242999 32.1993 0.537775Z"/>
       </g>
 
-      <g id="adductor_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-99.7058823529412,312.64705882352945)">
+      <g id="adductor_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-99.7058823529412,312.64705882352945)">
         <path d="M39.3444 54.6569C40.1412 63.4569 37.6844 76.9902 36.3564 82.6569C35.8584 
         85.4902 34.5636 93.6569 33.3683 103.657C31.8743 116.157 25.4003 134.657
         23.9062 136.657C23.4082 131.157 22.4122 122.657 21.4162 115.157C20.4202
@@ -1464,7 +1589,7 @@
         43.3236 38.5476 45.8569 39.3444 54.6569Z"/>
       </g>
 
-      <g id="adductor_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-46.47058823529411,316.61764705882354)">
+      <g id="adductor_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-46.47058823529411,316.61764705882354)">
         <path d="M0.656054 54.6514C-0.143946 63.4514 2.32272 76.9847 3.65605 82.6514C4.15605 
         85.4847 5.45605 93.6514 6.65605 103.651C8.15605 116.151 14.6561 134.651
         16.1561 136.651C16.6561 131.151 17.6561 122.651 18.6561 115.151C19.6561
@@ -1475,7 +1600,7 @@
         43.3181 1.45605 45.8514 0.656054 54.6514Z"/>
       </g>
 
-      <g id="quad_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(-115.88235294117648,343.2352941176471)">
+      <g id="quad_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(-115.88235294117648,343.2352941176471)">
         <path d="M15.1875 0.15773C14.6917 1.99106 13.0059 6.15773 10.2292 8.15773C7.45256 
         10.1577 2.79173 15.6577 0.808404 18.1577C0.14729 29.4911 0.114228 55.2577
         5.27089 67.6577C11.7167 83.1577 12.2125 91.1577 23.6167 104.658C23.9472
@@ -1486,7 +1611,7 @@
         16.675 5.15773C15.0861 2.35773 15.0213 0.65773 15.1875 0.15773Z"/>
       </g>
 
-      <g id="quad_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-27.205882352941178,345.88235294117646)">
+      <g id="quad_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-27.205882352941178,345.88235294117646)">
         <path d="M23 0.15892C23.5 1.99225 25.2 6.15892 28 8.15892C30.8 10.1589 35.5 15.6589 
         37.5 18.1589C38.1667 29.4923 38.2 55.2589 33 67.6589C26.5 83.1589 26 91.1589
         14.5 104.659C14.1667 104.992 12.8 106.559 10 110.159C7.2 113.759 2.5
@@ -1496,7 +1621,7 @@
         2.35892 23.1676 0.65892 23 0.15892Z"/>
       </g>
 
-      <g id="knee_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(-118.82352941176471,440.2941176470588)">
+      <g id="knee_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(-118.82352941176471,440.2941176470588)">
         <path d="M30.1072 16.8762C32.8786 21.286 38.1905 22.7225 40.5 22.8895V26.8984C40.5 
         29.9051 37.0357 38.4241 34.0664 45.4397C30.1072 50.9519 18.2298 43.9363
         17.24 41.4307C16.2502 38.9252 11.7962 29.9051 9.32171 32.9118C4.37278
@@ -1507,7 +1632,7 @@
         10.8628 26.643 12.8673 30.1072 16.8762Z"/>
       </g>
 
-      <g id="knee_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-26.470588235294116,442.9411764705883)">
+      <g id="knee_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-26.470588235294116,442.9411764705883)">
         <path d="M11 16.8398C8.2 21.2398 2.83333 22.6731 0.5 22.8398V26.8398C0.5 29.8398 
         4 38.3398 7 45.3398C11 50.8398 23 43.8398 24 41.3398C25 38.8398 29.5
         29.8398 32 32.8398C37 39.3398 40.5 40.3398 40.5 38.3398C38 27.3398 39
@@ -1516,7 +1641,7 @@
         -0.660237 19 6.83976 17.5 8.83976C16 10.8398 14.5 12.8398 11 16.8398Z"/>
       </g>
 
-      <g id="calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-129.11764705882354,476.17647058823536)">
+      <g id="calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-129.11764705882354,476.17647058823536)">
         <path d="M27.3994 10.7398C30.1065 13.9178 38.8403 14.3813 42.8688 14.2158H43.8499C44.3404 
         14.4682 45.0271 20.2631 43.8499 41.4234C42.3783 67.8738 34.0393 81.8476
         31.5867 88.3355C29.134 94.8233 27.1719 97.8177 25.2098 108.298C23.6401
@@ -1528,7 +1653,7 @@
         10.7398Z"/>
       </g>
 
-      <g id="calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-19.558823529411764,478.82352941176464)">
+      <g id="calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-19.558823529411764,478.82352941176464)">
         <path d="M17.6068 10.7398C14.8987 13.9178 6.16168 14.3813 2.13169 14.2158H1.15027C0.659561 
         14.4682 -0.0274332 20.2631 1.15027 41.4234C2.6224 67.8738 10.9645
         81.8476 13.418 88.3355C15.8716 94.8233 17.8344 97.8177 19.7973
@@ -1539,7 +1664,7 @@
         20.992 6.76729 17.6068 10.7398Z"/>
       </g>
 
-      <g id="foot_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-142.05882352941177,582.2058823529412)">
+      <g id="foot_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-142.05882352941177,582.2058823529412)">
         <path d="M14.685 32.8048C15.6896 25.7544 16.6941 23.2364 18.7033 18.2004V6.61774C19.2056 
         4.60337 26.7843 -1.36575 28.2468 1.07816C29.7537 3.5962 31.405
         6.49339 31.7629 7.12135C33.7721 10.6465 34.3031 11.4618 35.2789
@@ -1553,7 +1678,7 @@
         32.8048Z"/>
       </g>
 
-      <g id="foot_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(-3.676470588235304,584.8529411764706)">
+      <g id="foot_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(-3.676470588235304,584.8529411764706)">
         <path d="M27.1926 32.574C26.1926 25.574 25.1926 23.074 23.1926 18.074V6.57404C22.6926 
         4.57406 15.1484 -1.35242 13.6926 1.07403C12.1926 3.57408 10.5488
         6.45057 10.1926 7.07405C8.19257 10.5741 7.66394 11.3835 6.69257
@@ -1567,7 +1692,7 @@
         32.574Z"/>
       </g>
 
-      <g id="back_head" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(443.38235294117646,51.32352941176472)">
+      <g id="back_head" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(443.38235294117646,51.32352941176472)">
         <path d="
           M40.3801 62.0201
           C37.5801 65.6201 29.5468 66.1868 25.8801 66.0201
@@ -1581,7 +1706,7 @@
           Z" />
       </g>
 
-      <g id="back_side_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(404.2647058823529,261.764705882353)">
+      <g id="back_side_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(404.2647058823529,261.764705882353)">
         <path d="
           M29.315 24.0069
           C28.915 14.4069 19.1484 4.67358 14.315 1.00691
@@ -1597,7 +1722,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(380.4411764705883,465)">
+      <g id="back_side_calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(380.4411764705883,465)">
         <path d="
           M26 8.0804
           L15.5 15.5804
@@ -1612,7 +1737,7 @@
           Z"/>
       </g>
 
-      <g id="back_calf_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(401.3235294117646,486.6176470588234)">
+      <g id="back_calf_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(401.3235294117646,486.6176470588234)">
         <path d="
           M26.875 22.1514
           C26.875 18.9514 19.5417 7.15139 15.875 1.65139
@@ -1626,7 +1751,7 @@
           Z"/>
       </g>
 
-      <g id="back_quadratus_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(411.4705882352941,198.38235294117644)">
+      <g id="back_quadratus_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(411.4705882352941,198.38235294117644)">
         <path d="
           M10.5 9.39334
           C6.5 10.1933 2.16667 7.06001 0.5 5.39335
@@ -1644,7 +1769,7 @@
           Z"/>
       </g>
 
-      <g id="back_hand_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(296.3235294117647,341.3235294117647)">
+      <g id="back_hand_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(296.3235294117647,341.3235294117647)">
         <path d="
           M46.5267 5.6296
           C41.7267 7.6296 32.1934 3.1296 28.0267 0.629601
@@ -1665,7 +1790,7 @@
           Z"/>
       </g>
 
-      <g id="back_scapula_l" class="zone" style="fill:rgba(231,76,60,0.45);stroke:#E74C3C;stroke-width:1.5" transform="translate(406.17647058823525,148.67647058823533)">
+      <g id="back_scapula_l" class="zone" style="fill:rgba(249,67,94,0.55);stroke:#f9435e;stroke-width:1.2" transform="translate(406.17647058823525,148.67647058823533)">
         <path d="
           M38.5321 27.703
           C38.5321 12.503 31.5321 3.3697 28.0321 0.703033
@@ -1678,7 +1803,7 @@
           Z"/>
       </g>
 
-      <g id="back_lowerback_l" class="zone" style="fill:rgba(231,76,60,0.45);stroke:#E74C3C;stroke-width:1.5" transform="translate(439.2647058823529,245.2941176470589)">
+      <g id="back_lowerback_l" class="zone" style="fill:rgba(249,67,94,0.55);stroke:#f9435e;stroke-width:1.2" transform="translate(439.2647058823529,245.2941176470589)">
         <path d="
           M13.8126 9.73851
           C15.8126 6.53851 24.6459 2.40518 28.8126 0.73851
@@ -1690,7 +1815,7 @@
           Z"/>
       </g>
 
-      <g id="back_abductor_l" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(398.23529411764713,350.4411764705881)">
+      <g id="back_abductor_l" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(398.23529411764713,350.4411764705881)">
         <path d="
           M10.8561 1.17887
           L5.35606 5.67887
@@ -1708,7 +1833,7 @@
           Z"/>
       </g>
 
-      <g id="back_shoulder_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(378.38235294117646,143.2352941176471)">
+      <g id="back_shoulder_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(378.38235294117646,143.2352941176471)">
         <path d="
           M4.58148 18.2082
           C17.7815 1.80823 39.7481 -0.291773 49.0815 0.708227
@@ -1721,7 +1846,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(501.4705882352942,260.44117647058823)">
+      <g id="back_side_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(501.4705882352942,260.44117647058823)">
         <path d="
           M5.07362 23.9638
           C5.4821 14.3762 15.4558 4.65547 20.3915 0.993546
@@ -1737,7 +1862,7 @@
           Z"/>
       </g>
 
-      <g id="back_side_calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(523.9705882352941,468.97058823529414)">
+      <g id="back_side_calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(523.9705882352941,468.97058823529414)">
         <path d="
           M8.73837 8.079
           L19.3461 15.5776
@@ -1752,7 +1877,7 @@
           Z"/>
       </g>
 
-      <g id="back_calf_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(511.7647058823529,489.26470588235287)">
+      <g id="back_calf_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(511.7647058823529,489.26470588235287)">
         <path d="
           M0.5 21.9955
           C0.5 18.8211 7.72907 7.11587 11.3436 1.66002
@@ -1766,7 +1891,7 @@
           Z"/>
       </g>
 
-      <g id="back_quadratus_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(472.9411764705882,198.38235294117652)">
+      <g id="back_quadratus_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(472.9411764705882,198.38235294117652)">
         <path d="
           M45.5377 9.40281
           C49.5226 10.2037 53.8396 7.06699 55.5 5.39855
@@ -1784,7 +1909,7 @@
           Z"/>
       </g>
 
-      <g id="back_hand_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(588.0882352941176,339.99999999999994)">
+      <g id="back_hand_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(588.0882352941176,339.99999999999994)">
         <path d="
           M9.26165 5.97793
           C14.3965 8.11727 24.5949 3.30375 29.0522 0.629578
@@ -1805,7 +1930,7 @@
           Z"/>
       </g>
 
-      <g id="back_scapula_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(494.1176470588235,148.67647058823528)">
+      <g id="back_scapula_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(494.1176470588235,148.67647058823528)">
         <path d="
           M1.49917 27.6857
           C1.49917 12.4955 8.49338 3.36804 11.9905 0.703094
@@ -1818,7 +1943,7 @@
           Z"/>
       </g>
 
-      <g id="back_lowerback_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(471.61764705882354,245.29411764705884)">
+      <g id="back_lowerback_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(471.61764705882354,245.29411764705884)">
         <path d="
           M15.864 9.7555
           C13.8155 6.5474 4.76778 2.4036 0.5 0.732712
@@ -1830,7 +1955,7 @@
           Z"/>
       </g>
 
-      <g id="back_abductor_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(504.7058823529412,353.0882352941175)">
+      <g id="back_abductor_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(504.7058823529412,353.0882352941175)">
         <path d="
   M26.8121 1.19223
   L32.2368 5.71045
@@ -1848,7 +1973,7 @@
   Z"/>
       </g>
 
-      <g id="back_shoulder_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(510.0000000000002,144.5588235294119)">
+      <g id="back_shoulder_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(510.0000000000002,144.5588235294119)">
         <path d="
   M47.4145 18.0504
   C34.201 1.79657 12.2119 -0.284718 2.86903 0.706372
@@ -1861,7 +1986,7 @@
   Z"/>
       </g>
 
-      <g id="back_forearm_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(553.2352941176471,250.1470588235294)">
+      <g id="back_forearm_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(553.2352941176471,250.1470588235294)">
         <path d="
   M19.5654 9.77952
   C17.2048 12.5366 6.45075 11.5847 1.36882 10.7642
@@ -1878,7 +2003,7 @@
   Z"/>
       </g>
 
-      <g id="back_trap_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(430.1470588235294,101.91176470588236)">
+      <g id="back_trap_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(430.1470588235294,101.91176470588236)">
         <path d="
   M27.4322 14.6709
   C21.4322 11.8709 17.2656 3.83753 15.9322 0.170868
@@ -1890,7 +2015,7 @@
   Z"/>
       </g>
 
-      <g id="back_trap_r" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(472.5,101.91176470588235)">
+      <g id="back_trap_r" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(472.5,101.91176470588235)">
         <path d="
   M11.1438 15.017
   C17.226 12.1498 21.4498 3.92391 22.8014 0.169342
@@ -1902,7 +2027,7 @@
   Z"/>
       </g>
 
-      <g id="back_triceps_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(366.61764705882354,185.29411764705884)">
+      <g id="back_triceps_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(366.61764705882354,185.29411764705884)">
         <path d="
           M20.2654 8.04777
           C18.2654 9.64777 14.4321 14.3811 12.7654 16.5478
@@ -1917,7 +2042,7 @@
           Z"/>
       </g>
 
-      <g id="back_triceps_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(530.7352941176471,186.61764705882354)">
+      <g id="back_triceps_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(530.7352941176471,186.61764705882354)">
         <path d="
           M22.7729 8.08513
           C24.7689 9.69304 28.5946 14.4498 30.258 16.6272
@@ -1932,7 +2057,7 @@
           Z"/>
       </g>
 
-      <g id="back_glute_l" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(411.61764705882354,303.0882352941177)">
+      <g id="back_glute_l" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(411.61764705882354,303.0882352941177)">
         <path d="
   M30.186 0.577573
   C42.586 -0.622427 53.0194 12.4109 56.686 19.0776
@@ -1947,7 +2072,7 @@
   Z"/>
       </g>
 
-      <g id="back_glute_r" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(473.82352941176475,304.4117647058823)">
+      <g id="back_glute_r" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(473.82352941176475,304.4117647058823)">
         <path d="
   M26.9123 0.577686
   C14.5533 -0.623834 4.15453 12.426 0.5 19.1011
@@ -1962,7 +2087,7 @@
   Z"/>
       </g>
 
-      <g id="back_forearm_l" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(326.9117647058824,248.82352941176475)">
+      <g id="back_forearm_l" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(326.9117647058824,248.82352941176475)">
         <path d="
   M42.1169 9.92407
   C44.5169 12.7241 55.4502 11.7574 60.6169 10.9241
@@ -1978,7 +2103,7 @@
   Z"/>
       </g>
 
-      <g id="back_adductor_l_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(418.235294117647,383.82352941176475)">
+      <g id="back_adductor_l_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(418.235294117647,383.82352941176475)">
         <path d="
   M46.5051 0.790525
   C45.3051 3.19052 28.6718 4.12386 20.5051 4.29052
@@ -1993,7 +2118,7 @@
   Z"/>
       </g>
 
-      <g id="back_adductor_r_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(475.14705882352945,385.1470588235294)">
+      <g id="back_adductor_r_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(475.14705882352945,385.1470588235294)">
         <path d="
   M1.16739 0.792267
   C2.37607 3.20666 19.1297 4.1456 27.3554 4.31326
@@ -2008,7 +2133,7 @@
   Z"/>
       </g>
 
-      <g id="back_erector_l_new" class="zone" style="fill:rgba(230,126,34,0.45);stroke:#E67E22;stroke-width:1.5" transform="translate(432.79411764705884,135)">
+      <g id="back_erector_l_new" class="zone" style="fill:rgba(255,115,72,0.55);stroke:#ff7348;stroke-width:1.2" transform="translate(432.79411764705884,135)">
         <path d="
           M36.8454 0.715027
           C28.1787 3.88169 9.4454 10.115 3.8454 9.71503
@@ -2021,7 +2146,7 @@
           Z"/>
       </g>
 
-      <g id="back_erector_r_new" class="zone" style="fill:rgba(241,196,15,0.45);stroke:#F1C40F;stroke-width:1.5" transform="translate(471.1764705882353,135)">
+      <g id="back_erector_r_new" class="zone" style="fill:rgba(224,183,51,0.55);stroke:#e0b733;stroke-width:1.2" transform="translate(471.1764705882353,135)">
         <path d="
           M34.0943 9.89189
           C28.3934 10.2997 9.32273 3.94418 0.5 0.715424
@@ -2034,7 +2159,7 @@
           Z"/>
       </g>
 
-      <g id="back_foot_l_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(375.88235294117646,549.2647058823529)">
+      <g id="back_foot_l_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(375.88235294117646,549.2647058823529)">
         <path d="
           M15.78 7.80816
           C10.18 14.6082 5.44662 15.3082 3.77995 14.8082
@@ -2051,7 +2176,7 @@
           Z"/>
       </g>
 
-      <g id="back_foot_r_new" class="zone" style="fill:rgba(46,204,113,0.45);stroke:#2ECC71;stroke-width:1.5" transform="translate(524.1176470588236,554.5588235294118)">
+      <g id="back_foot_r_new" class="zone" style="fill:rgba(199,219,94,0.55);stroke:#c7db5e;stroke-width:1.2" transform="translate(524.1176470588236,554.5588235294118)">
         <path d="
           M23.5291 7.83834
           C29.0158 14.6664 33.6534 15.3693 35.2863 14.8672
@@ -2067,162 +2192,26 @@
           C16.1808 -1.19881 16.6707 -0.696742 23.5291 7.83834
           Z"/>
       </g>
-    </svg>
-      </div>
-    </div>
-
-    <div class="legend">
-      <div class="legend-item">
-        <div class="legend-dot" style="background:#2ECC71;"></div>
-        Норма
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:#F1C40F;"></div>
-        Лёгкое
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:#E67E22;"></div>
-        Умеренное
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background:#E74C3C;"></div>
-        Выраженное
-      </div>
+    </svg></div>
     </div>
   </div>
 
+  <!-- ==== ФОТО ДИАГНОСТИКИ ==== -->
+  <div class="text-section" style="margin-top: 18px;">
+    <div class="label">Фото диагностики</div>
+  </div>
+  <div class="photos">
+    <div class="photo">Фото 1</div>
+    <div class="photo">Фото 2</div>
+    <div class="photo">Фото 3</div>
+    <div class="photo">Фото 4</div>
+  </div>
+
+  <!-- ==== ПОДВАЛ ==== -->
   <div class="footer">
-    <span>OSANKA.health — Отчёт диагностики</span>
-    <span>Страница 1 из 2</span>
-    <span>Сгенерировано: 24.03.2026 15:35</span>
+    <span>Программа здорового тела · osanka.health</span>
+    <span>Диагност: Кузнецов Иван</span>
   </div>
-</div>
-
-<!-- ==================== СТРАНИЦА 2 ==================== -->
-<div class="page">
-  <div class="watermark">OSANKA</div>
-
-  <div class="header" style="padding:12px 40px 10px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div class="logo" style="font-size:18px;">OSANKA<span>.health</span></div>
-      <div style="text-align:right;font-size:10px;opacity:0.6;font-weight:400;">Иванова Мария Сергеевна · 24 марта 2026</div>
-    </div>
-  </div>
-
-  <div class="content" style="padding:16px 40px;">
-    <!-- Проблемные зоны -->
-    <div class="zone-group">
-      <div class="section-title" style="border-color:#E74C3C;font-size:12px;margin-bottom:6px;padding-bottom:4px;">Зоны повышенного внимания</div>
-      <p style="font-size:8px;color:#888;margin-bottom:5px;font-weight:500;">
-        Зоны с умеренным и выраженным напряжением, требующие приоритетной работы
-      </p>
-      
-    <table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1.5px solid #e4e8ec;">
-        <thead>
-            <tr style="background:linear-gradient(180deg,#f6f8fa,#eef0f2);">
-                <th style="padding:4px 10px;text-align:left;border-bottom:2px solid #d0d4d8;font-weight:700;font-size:9px;color:#555;letter-spacing:0.3px;">Зона</th>
-                <th style="padding:4px 10px;text-align:left;border-bottom:2px solid #d0d4d8;font-weight:700;font-size:9px;color:#555;letter-spacing:0.3px;">Статус</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr style="background:#ffffff;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Лопатка Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E74C3C;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Выраженное напряжение</td>
-        </tr>
-        <tr style="background:#f9fafb;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Поясница Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E74C3C;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Выраженное напряжение</td>
-        </tr>
-        <tr style="background:#ffffff;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Трапеция Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#f9fafb;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Плечо Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#ffffff;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Колено Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#f9fafb;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Трапеция Л (спина)</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#ffffff;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Плечо Л (спина)</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#f9fafb;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Разгибатель Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#ffffff;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Квадратная Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr>
-        <tr style="background:#f9fafb;">
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#1a1a2e;font-weight:600;">Ягодица Л</td>
-            <td style="padding:4px 10px;border-bottom:1px solid #eef0f2;font-size:9px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E67E22;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Умеренное напряжение</td>
-        </tr></tbody>
-    </table>
-    </div>
-
-    <!-- Зоны с лёгким напряжением -->
-    <div class="zone-group" style="margin-top:8px;">
-      <div class="section-title" style="border-color:#F1C40F;font-size:12px;margin-bottom:6px;padding-bottom:4px;">Зоны с лёгким напряжением</div>
-      <p style="font-size:8px;color:#888;margin-bottom:5px;font-weight:500;">
-        Области для мониторинга — без активного вмешательства
-      </p>
-      <div style="display:flex;gap:12px;"><div style="flex:1;"><table style="width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;border:1px solid #eef0f2;"><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Трапеция П</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Плечо П</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Грудная Л</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Косые Л</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Бок бедра Л</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Квадрицепс Л</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Затылок</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Трапеция П (спина)</td></tr></table></div><div style="flex:1;"><table style="width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;border:1px solid #eef0f2;"><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Плечо П (спина)</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Лопатка П</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Разгибатель П</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Квадратная П</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Поясница П</td></tr><tr style="background:#f9fafb;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Бок Л (спина)</td></tr><tr style="background:#ffffff;"><td style="padding:3px 8px;border-bottom:1px solid #eef0f2;font-size:8px;color:#3d4852;font-weight:500;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F1C40F;margin-right:6px;box-shadow:0 1px 2px rgba(0,0,0,0.15);"></span>Абдуктор Л</td></tr></table></div></div>
-    </div>
-
-    <!-- Рекомендации -->
-    <div class="recommendations">
-      <h3>Рекомендации специалиста</h3>
-      <ol style="padding-left:18px;">
-        <li><strong>Левая лопатка и поясница</strong> — выраженное напряжение. Рекомендуется курс миофасциального релиза 2 раза в неделю, акцент на левую сторону.</li>
-        <li><strong>Трапециевидная мышца</strong> — асимметрия между правой и левой стороной. Необходима работа с шейно-воротниковой зоной.</li>
-        <li><strong>Левое колено</strong> — умеренное напряжение, возможна компенсаторная нагрузка из-за перекоса таза. Контроль через 2 недели.</li>
-        <li><strong>Общая рекомендация:</strong> ежедневная утренняя разминка 10–15 мин, акцент на мобильность грудного отдела и растяжку левой стороны тела.</li>
-      </ol>
-    </div>
-
-    <!-- Подпись -->
-    <div class="signature-block">
-      <div>
-        <div class="signature-line"></div>
-        <div class="signature-label">Подпись специалиста</div>
-        <div style="font-size:10px;margin-top:4px;font-weight:700;color:#0d1117;">Александр Карчаускас</div>
-      </div>
-      <div style="text-align:center;">
-        <div class="qr-placeholder">
-          QR<br>Запись
-        </div>
-      </div>
-      <div>
-        <div class="signature-line"></div>
-        <div class="signature-label">Подпись клиента</div>
-      </div>
-    </div>
-
-    <!-- Дисклеймер -->
-    <div class="disclaimer">
-      <p>
-        Данный отчёт носит информационный характер и не является медицинским заключением.
-        Результаты диагностики отражают состояние мышечного тонуса на момент осмотра.
-        При наличии болевого синдрома рекомендуется консультация профильного врача.
-        © 2026 OSANKA.health — Студия коррекции осанки
-      </p>
-    </div>
-  </div>
-
-  <div class="footer">
-    <span>OSANKA.health — Отчёт диагностики</span>
-    <span>Страница 2 из 2</span>
-    <span>Сгенерировано: 24.03.2026 15:35</span>
-  </div>
-</div>
 
 </body>
 </html>
